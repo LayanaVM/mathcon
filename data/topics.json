@@ -1,0 +1,49 @@
+{
+    "title": "Topics to be Covered",
+    "topics": [
+        {
+            "id": 1,
+            "name": "Abstract Algebra & Algebraic Structures in Cryptography"
+        },
+        {
+            "id": 2,
+            "name": "Lattice-based, Multivariate & Isogeny-Based Cryptography"
+        },
+        {
+            "id": 3,
+            "name": "Linear Algebra in Spectral Threat Analysis"
+        },
+        {
+            "id": 4,
+            "name": "Coding Theory & Error Correction"
+        },
+        {
+            "id": 5,
+            "name": "Functional Analysis in Signal & Anomaly Detection"
+        },
+        {
+            "id": 6,
+            "name": "Dynamical Systems & Control Theory"
+        },
+        {
+            "id": 7,
+            "name": "Epidemiological Models (ODE/PDE Frameworks)"
+        },
+        {
+            "id": 8,
+            "name": "Spectral Graph Theory & Algebraic Graph Theory"
+        },
+        {
+            "id": 9,
+            "name": "Combinatorial & Fuzzy Optimization"
+        },
+        {
+            "id": 10,
+            "name": "Topological Data Analysis"
+        },
+        {
+            "id": 11,
+            "name": "Extreme Value Theory"
+        }
+    ]
+}

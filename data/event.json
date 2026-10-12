@@ -1,0 +1,37 @@
+{
+    "title": "International Workshop and Conference on Mathematical Models for Post-Quantum Cryptography and its Applications",
+    "shortName": "IWCMPQC 2027",
+    "dates": {
+        "start": "2027-02-22",
+        "end": "2027-02-27",
+        "display": "22 - 27 February 2027"
+    },
+    "organizers": [
+        {
+            "id": "gri",
+            "type": "International Workshop",
+            "department": "Centre for Mathematical Modelling and Quantum Computing (CMMQC)",
+            "institution": "Gandhigram Rural Institute (Deemed to be University)",
+            "location": "Tamil Nadu, India",
+            "dates": {
+                "start": "2027-02-22",
+                "end": "2027-02-24",
+                "display": "22-24 February 2027"
+            },
+            "logo": "assets/gri-logo.png"
+        },
+        {
+            "id": "cusat",
+            "type": "International Conference",
+            "department": "Department of Mathematics",
+            "institution": "Cochin University of Science and Technology",
+            "location": "Kerala, India",
+            "dates": {
+                "start": "2027-02-25",
+                "end": "2027-02-27",
+                "display": "25-27 February 2027"
+            },
+            "logo": "assets/cusat-logo.png"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "title": "Contact Details",
+    "contacts": [
+        {
+            "role": "Convener",
+            "name": "Dr. Tanushree Pandit",
+            "designation": "Assistant Professor",
+            "department": "Department of Mathematics",
+            "institution": "CUSAT",
+            "phone": "+91 8960419388",
+            "email": "tpandit@cusat.ac.in"
+        }
+    ]
+}
