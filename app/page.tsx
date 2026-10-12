@@ -6,6 +6,7 @@ import eventData from "@/data/event.json";
 import aboutData from "@/data/about.json";
 import topicsData from "@/data/topics.json";
 import contactData from "@/data/contact.json";
+import Threads from "@/components/Threads";
 
 // Topic descriptions matching Stitch design system scope
 const topicDescriptions: Record<number, string> = {
@@ -174,8 +175,32 @@ export default function Home() {
       {/* 1. HERO SECTION                            */}
       {/* ========================================== */}
       <section className="relative lattice-pattern text-brand-cream overflow-hidden py-16 lg:py-24 border-b border-brand-forestLight/60" id="hero">
+        {/* Dynamic Wave Threads Background from React Bits */}
+        <div className="absolute inset-0 z-0 opacity-70 pointer-events-none" aria-hidden="true">
+          <Threads
+            color="#8FBFA8"
+            accentColor="#E8A87C"
+            lineCount={90}
+            thickness={0.6}
+            softness={1.3}
+            amplitude={1.7}
+            distance={0.4}
+            waves={1.05}
+            speed={0.6}
+            split={0.04}
+            fray={0.5}
+            angle={25}
+            taper={0.6}
+            brightness={1.4}
+            parting={0}
+            enableMouseInteraction={true}
+            fade={0.2}
+            opacity={0.85}
+          />
+        </div>
+
         {/* Cryptographic Mathematical Decorative Background Chalk Elements */}
-        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden" aria-hidden="true">
+        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-[1]" aria-hidden="true">
           <div className="chalk-formula text-3xl lg:text-5xl top-8 right-12 absolute opacity-40">
             ∫ f(x) dx
           </div>
