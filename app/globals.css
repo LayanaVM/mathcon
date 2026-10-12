@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-brand-forest: #1F3A34;
+  --color-brand-forestDark: #142723;
+  --color-brand-forestLight: #2C4E47;
+  --color-brand-sage: #8FBFA8;
+  --color-brand-sageLight: #E2EFE9;
+  --color-brand-accent: #E8A87C;
+  --color-brand-accentDark: #D58C5A;
+  --color-brand-cream: #F7F6F0;
+  --color-brand-creamMuted: #EFECE2;
+  --color-brand-ink: #162320;
+  --color-brand-inkMuted: #4F615C;
+  --color-brand-border: #D9D5C7;
+
+  --font-serif: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
+  --font-sans: var(--font-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Lattice / Cryptography Quantum Canvas background grid */
+.lattice-pattern {
+  background-color: #1F3A34;
+  background-image: 
+    radial-gradient(circle at 20px 20px, rgba(143, 191, 168, 0.15) 2px, transparent 0),
+    linear-gradient(to right, rgba(143, 191, 168, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(143, 191, 168, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.chalk-formula {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: rgba(143, 191, 168, 0.28);
+  user-select: none;
+  pointer-events: none;
+}
+
+.nav-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F7F6F0;
+  color: #162320;
+  font-family: var(--font-sans);
 }
