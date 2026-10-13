@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500" fill="none">
+  <defs>
+    <radialGradient id="bgGrad11" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#2C4E47" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#182E27" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0E1B17" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="glowGrad11" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8A87C" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#8FBFA8" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="500" fill="url(#bgGrad11)"/>
+  <rect width="400" height="500" fill="url(#glowGrad11)"/>
+
+  <!-- Subtle quantum grid lines -->
+  <g stroke="#8FBFA8" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.18">
+    <line x1="0" y1="70" x2="400" y2="70"/>
+    <line x1="0" y1="140" x2="400" y2="140"/>
+    <line x1="0" y1="210" x2="400" y2="210"/>
+    <line x1="0" y1="280" x2="400" y2="280"/>
+    <line x1="100" y1="0" x2="100" y2="350"/>
+    <line x1="200" y1="0" x2="200" y2="350"/>
+    <line x1="300" y1="0" x2="300" y2="350"/>
+  </g>
+
+  <!-- Formula watermark -->
+  <text x="370" y="45" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" fill="#8FBFA8" opacity="0.4" text-anchor="end">G(z) = exp(-(1 + xi (z-mu)/sigma)^(-1/xi))</text>
+
+  <!-- Track badge in top left corner of artwork -->
+  <g transform="translate(26, 26)">
+    <rect width="48" height="24" rx="4" fill="#142723" stroke="#E8A87C" stroke-width="1.2" opacity="0.9"/>
+    <text x="24" y="16.5" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#E8A87C" text-anchor="middle">T11</text>
+  </g>
+
+  <!-- Track graphic visualization -->
+  <g>
+    
+      <!-- Heavy Tailed Frechet Density & Exceedance Region -->
+      <!-- Baseline axis -->
+      <line x1="60" y1="230" x2="340" y2="230" stroke="#8FBFA8" stroke-width="1.2" opacity="0.5"/>
+      <!-- Tail threshold line -->
+      <line x1="240" y1="70" x2="240" y2="230" stroke="#E8A87C" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.75"/>
+      <!-- Shaded extreme tail region -->
+      <path d="M 240 230 L 240 145 C 270 180, 305 210, 340 220 L 340 230 Z" fill="#E8A87C" fill-opacity="0.25"/>
+      <!-- Density curve -->
+      <path d="M 70 228 C 90 228, 110 80, 135 80 C 170 80, 205 130, 240 145 C 275 160, 310 215, 340 220" fill="none" stroke="#E8A87C" stroke-width="3" opacity="0.95"/>
+      <circle cx="135" cy="80" r="5" fill="#ffffff"/>
+      <!-- Extreme quantiles -->
+      <circle cx="240" cy="145" r="5.5" fill="#E8A87C"/>
+      <circle cx="295" cy="195" r="4.5" fill="#8FBFA8"/>
+    
+  </g>
+</svg>

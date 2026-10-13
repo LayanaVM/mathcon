@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500" fill="none">
+  <defs>
+    <radialGradient id="bgGrad6" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#2C4E47" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#122520" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#0E1B17" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="glowGrad6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8FBFA8" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#E8A87C" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="500" fill="url(#bgGrad6)"/>
+  <rect width="400" height="500" fill="url(#glowGrad6)"/>
+
+  <!-- Subtle quantum grid lines -->
+  <g stroke="#E8A87C" stroke-width="0.5" stroke-dasharray="2 4" opacity="0.18">
+    <line x1="0" y1="70" x2="400" y2="70"/>
+    <line x1="0" y1="140" x2="400" y2="140"/>
+    <line x1="0" y1="210" x2="400" y2="210"/>
+    <line x1="0" y1="280" x2="400" y2="280"/>
+    <line x1="100" y1="0" x2="100" y2="350"/>
+    <line x1="200" y1="0" x2="200" y2="350"/>
+    <line x1="300" y1="0" x2="300" y2="350"/>
+  </g>
+
+  <!-- Formula watermark -->
+  <text x="370" y="45" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" fill="#E8A87C" opacity="0.4" text-anchor="end">dx/dt = sigma(y - x), dz/dt = xy - beta z</text>
+
+  <!-- Track badge in top left corner of artwork -->
+  <g transform="translate(26, 26)">
+    <rect width="48" height="24" rx="4" fill="#142723" stroke="#8FBFA8" stroke-width="1.2" opacity="0.9"/>
+    <text x="24" y="16.5" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#8FBFA8" text-anchor="middle">T06</text>
+  </g>
+
+  <!-- Track graphic visualization -->
+  <g>
+    
+      <!-- Lorenz Strange Attractor Butterfly -->
+      <!-- Left lobe -->
+      <path d="M 200 180 C 140 110, 80 140, 110 200 C 135 240, 175 220, 200 180" fill="none" stroke="#8FBFA8" stroke-width="2.5" opacity="0.85"/>
+      <path d="M 200 180 C 150 125, 100 150, 125 195 C 145 225, 178 210, 200 180" fill="none" stroke="#8FBFA8" stroke-width="1.5" opacity="0.5"/>
+      <!-- Right lobe -->
+      <path d="M 200 180 C 260 110, 320 140, 290 200 C 265 240, 225 220, 200 180" fill="none" stroke="#E8A87C" stroke-width="2.5" opacity="0.85"/>
+      <path d="M 200 180 C 250 125, 300 150, 275 195 C 255 225, 222 210, 200 180" fill="none" stroke="#E8A87C" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="200" cy="180" r="5" fill="#ffffff"/>
+      <circle cx="110" cy="200" r="4" fill="#8FBFA8"/>
+      <circle cx="290" cy="200" r="4" fill="#E8A87C"/>
+    
+  </g>
+</svg>

@@ -7,21 +7,8 @@ import aboutData from "@/data/about.json";
 import topicsData from "@/data/topics.json";
 import contactData from "@/data/contact.json";
 import Threads from "@/components/Threads";
+import ProfileCard from "@/components/ProfileCard";
 
-// Topic descriptions matching Stitch design system scope
-const topicDescriptions: Record<number, string> = {
-  1: "Abstract algebraic structures, finite fields, polynomial rings, group-based cryptography, and homomorphic frameworks for quantum-resilient cryptographic primitives.",
-  2: "Euclidean lattice geometry, Shortest Vector Problem (SVP), Closest Vector Problem (CVP), multivariate quadratic systems, and supersingular elliptic curve isogenies.",
-  3: "Spectral graph theory, matrix decompositions, eigenvalue analysis, and vector spaces applied to advanced quantum threat modeling and network vulnerability detection.",
-  4: "Algebraic coding theory, Goppa codes, quasi-cyclic codes, rank-metric codes, and low-latency decoding algorithms resistant to quantum cryptanalysis.",
-  5: "Hilbert and Banach spaces, operator algebras, and spectral theory for high-assurance anomaly detection, cryptographic telemetry, and secure signal analysis.",
-  6: "Nonlinear dynamical systems, chaos theory, stability analysis, and feedback control architectures for cyber-physical security in mission-critical infrastructure.",
-  7: "Differential equation frameworks, compartmental contagion modeling, and predictive propagation dynamics for cyber warfare defense and threat diffusion.",
-  8: "Graph Laplacians, expander graphs, algebraic connectivity, and topological graphs for secure distributed consensus and quantum network routing.",
-  9: "NP-hard combinatorial optimization, fuzzy relational equations, and heuristic search for cryptographic parameter tuning and side-channel resilience.",
-  10: "Persistent homology, Simplicial complexes, and high-dimensional geometric data manifolds for post-quantum cryptographic protocol verification.",
-  11: "Generalized extreme value distributions, heavy-tailed risk modeling, and tail-index estimators for catastrophic quantum cryptanalytic event forecasting.",
-};
 
 // Contextual badges for organizer tabs
 const organizerBadges: Record<string, string> = {
@@ -491,12 +478,13 @@ export default function Home() {
       {/* ========================================== */}
       <section className="py-20 bg-brand-cream border-b border-brand-border relative" id="topics">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mb-12">
-            <div className="flex items-center gap-2 mb-3">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 mb-3">
               <span className="w-8 h-[2px] bg-brand-accent" />
               <span className="text-xs uppercase font-mono tracking-widest text-brand-forest font-semibold">
                 Scope & Call for Research
               </span>
+              <span className="w-8 h-[2px] bg-brand-accent" />
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-forest mb-4">
               {topicsData.title}
@@ -507,46 +495,20 @@ export default function Home() {
           </div>
 
           {/* Topics Grid Container */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="topics-grid">
-            {topicsData.topics.map((t) => {
-              const trackNum = String(t.id).padStart(2, "0");
-              const desc = topicDescriptions[t.id] || "Advanced research models, algebraic formulations, and post-quantum application architectures.";
-
-              return (
-                <div
-                  key={t.id}
-                  className="bg-white p-6 rounded-xl border border-brand-border hover:border-brand-forest/60 hover:shadow-md transition-all group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-xs font-bold text-brand-accent bg-brand-forest px-2.5 py-1 rounded">
-                        T{trackNum}
-                      </span>
-                      <span className="text-brand-sage font-mono text-xs">Track {trackNum}</span>
-                    </div>
-                    <h3 className="font-serif text-lg font-bold text-brand-forest mb-3 group-hover:text-brand-forestLight leading-snug">
-                      {t.name}
-                    </h3>
-                    <p className="text-brand-inkMuted text-xs sm:text-sm leading-relaxed">
-                      {desc}
-                    </p>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-brand-border/60 flex items-center justify-between text-xs text-brand-inkMuted">
-                    <span className="font-mono text-[11px] uppercase tracking-wider text-brand-forest font-medium">
-                      Inviting Papers
-                    </span>
-                    <svg
-                      className="w-4 h-4 text-brand-sage group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                    </svg>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center" id="topics-grid">
+            {topicsData.topics.map((t) => (
+              <ProfileCard
+                key={t.id}
+                name={t.name}
+                avatarUrl={`/assets/topics/topic-${t.id}.svg?v=2`}
+                tiltStrength={10}
+                radius={16}
+                enableTilt={true}
+                theme="dark"
+                backdropColor="#1F3A34"
+                className="w-full"
+              />
+            ))}
           </div>
 
           {/* Call for Papers Banner Box (Chalkboard style matching reference palette) */}

@@ -1,0 +1,98 @@
+.profile-card {
+  --pc-rotate-x: 0deg;
+  --pc-rotate-y: 0deg;
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  perspective: 1000px;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.profile-card__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: calc(var(--pc-radius) + 10px);
+  background: var(--pc-frame);
+  box-shadow: var(--pc-frame-shadow);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+  transform: rotateX(var(--pc-rotate-x)) rotateY(var(--pc-rotate-y));
+  will-change: transform;
+}
+
+.profile-card__tile {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--pc-radius);
+  background: var(--pc-backdrop);
+  box-shadow: var(--pc-tile-shadow);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.profile-card__scrim,
+.profile-card__tile-rim,
+.profile-card__rim {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.profile-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.profile-card__scrim {
+  background: linear-gradient(
+    to top,
+    rgba(14, 25, 23, 0.95) 0%,
+    rgba(14, 25, 23, 0.8) 35%,
+    rgba(14, 25, 23, 0.45) 60%,
+    rgba(14, 25, 23, 0.15) 75%,
+    rgba(14, 25, 23, 0) 90%
+  );
+}
+
+.profile-card__info {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 22px;
+  color: #ffffff;
+  z-index: 2;
+}
+
+.profile-card__name {
+  margin: 0;
+  font-family: var(--font-serif), "EB Garamond", Georgia, serif;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: inherit;
+}
+
+.profile-card__tile-rim {
+  box-shadow:
+    inset 0 0 0 1px var(--pc-tile-edge),
+    inset 0 1px 0 var(--pc-tile-highlight);
+}
+
+.profile-card__rim {
+  box-shadow:
+    inset 0 0 0 1px var(--pc-frame-edge),
+    inset 0 1px 0 var(--pc-frame-highlight);
+}
