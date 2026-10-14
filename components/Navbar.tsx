@@ -1,17 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import eventData from "@/data/event.json";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isRegisterPage = pathname === "/register";
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-transparent transition-all duration-200">
+    <header
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-black/90 backdrop-blur-md border-b border-[#3ddc84]/15 shadow-xl"
+          : "bg-transparent"
+      }`}
+    >
       <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-20 h-20 sm:h-24 flex items-center justify-between">
         <Link
           className="flex items-center group focus:outline-none focus:ring-2 focus:ring-brand-accent rounded-lg p-1"

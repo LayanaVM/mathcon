@@ -83,32 +83,73 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="hero-container">
           <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
-            {/* Main Title - Center Aligned */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 leading-[1.15] text-center max-w-4xl">
-              {eventData.title}
+            {/* Jointly Organized above International Workshop and Conference */}
+            <div className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] text-[#a2c4b5] mb-2 sm:mb-2.5 font-medium">
+              Jointly Organized by GRI &amp; CUSAT
+            </div>
+
+            {/* Small uppercase label above - Bolder */}
+            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-3 sm:mb-4">
+              International Workshop and Conference
+            </span>
+
+            {/* Main Title - Deliberate two lines */}
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2 sm:mb-3 leading-[1.18] text-center max-w-4xl">
+              <span className="block">Mathematical Models for</span>
+              <span className="block text-white">Post-Quantum Cryptography</span>
             </h1>
 
-            {/* Date below Main Heading as h2 */}
-            <h2 className="text-lg sm:text-2xl font-mono text-brand-accent tracking-wider mb-10 sm:mb-12 text-center font-medium">
+            {/* Subtitle - Deliberate third line */}
+            <p className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-center mb-5 sm:mb-6">
+              and its Applications
+            </p>
+
+            {/* Date below Main Heading */}
+            <h2 className="text-base sm:text-xl font-mono text-brand-accent tracking-wider mb-2.5 text-center font-medium">
               {eventData.dates.display}
             </h2>
 
-            {/* CTAs */}
+            {/* Venue - Unboxed typography, only CUSAT */}
+            <div className="flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base text-[#d4e5dc] mb-8 sm:mb-10 font-sans">
+              <span className="text-[#3ddc84] font-mono text-xs uppercase tracking-wider font-semibold">
+                Venue:
+              </span>
+              <span className="text-white font-medium">
+                Cochin University of Science and Technology (CUSAT), Kochi, Kerala
+              </span>
+            </div>
+
+            {/* CTAs - All three buttons green */}
             <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="/register"
+                className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
+              >
+                <span>Register Now</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
               <a
                 href="#topics"
                 className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
               >
-                <span>Explore {topicsData.topics.length} Conference Tracks</span>
+                <span>Explore Topics</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                 </svg>
               </a>
               <a
-                href="#about"
-                className="bg-transparent hover:bg-[#3ddc84]/10 text-white border border-[#3ddc84]/40 hover:border-[#3ddc84] px-6 py-3.5 rounded-lg text-sm font-medium transition-all"
+                href="/assets/topics/mathcon.pdf"
+                download="mathcon.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
               >
-                Read Event Scope & Rationale
+                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>Download Brochure</span>
               </a>
             </div>
           </div>

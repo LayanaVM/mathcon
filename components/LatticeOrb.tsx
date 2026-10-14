@@ -88,10 +88,10 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       // 30 fps limit on mobile
       const frameMsLimit = isMobile ? 1000 / 30 : 0;
 
-      // Scaled entity counts
-      const CUBE_COUNT = isMobile ? 12 : 24;
-      const DUST_COUNT = isMobile ? 45 : 140;
-      const HASH_LABEL_COUNT = isMobile ? 2 : 5;
+      // Scaled entity counts (Reduced cubes in middle text area)
+      const CUBE_COUNT = isMobile ? 4 : 8;
+      const DUST_COUNT = isMobile ? 40 : 100;
+      const HASH_LABEL_COUNT = isMobile ? 2 : 3;
 
       // Palette: Pure Black background (#000000), Emerald (#3ddc84), Mint Green (#a7f3d0) - Green throughout
       const BG_COLOR_HEX = 0x000000;
@@ -502,13 +502,17 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
         const s = 0.16 + Math.random() * 0.32;
         cube.scale.setScalar(s);
 
+        // Bias cubes away from the middle text area to outer left and right flanks
+        const isLeft = c % 2 === 0;
+        const baseTheta = isLeft ? Math.PI + (Math.random() - 0.5) * 1.1 : (Math.random() - 0.5) * 1.1;
+
         const uData: CubeData = {
-          radius: 2.5 + Math.random() * 2.2,
-          theta: Math.random() * Math.PI * 2,
-          phi: Math.acos(2 * Math.random() - 1),
-          orbit: (0.04 + Math.random() * 0.09) * (Math.random() < 0.5 ? -1 : 1),
-          bobAmp: 0.12 + Math.random() * 0.24,
-          bobSpeed: 0.5 + Math.random() * 0.8,
+          radius: 3.2 + Math.random() * 2.0,
+          theta: baseTheta,
+          phi: Math.acos(1.4 * (Math.random() - 0.5)),
+          orbit: (0.025 + Math.random() * 0.04) * (Math.random() < 0.5 ? -1 : 1),
+          bobAmp: 0.12 + Math.random() * 0.22,
+          bobSpeed: 0.4 + Math.random() * 0.6,
           bobPhase: Math.random() * 6.28,
           spin: new THREE.Vector3(
             (Math.random() - 0.5) * 0.85,
@@ -549,17 +553,17 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       // Small Monospace Maths & Cryptography Text Labels floating in scene
       const mathLabelDefs = isMobile
         ? [
-            { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.35, 0.82] },
-            { t: 'SVP', c: '#3ddc84', anchor: [0.42, 0.72] },
-            { t: 'λ₁(L)', c: '#a7f3d0', anchor: [0.55, -0.65] }
+            { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.55, 0.88] },
+            { t: 'SVP', c: '#3ddc84', anchor: [0.55, 0.82] },
+            { t: 'λ₁(L)', c: '#a7f3d0', anchor: [0.60, -0.72] }
           ]
         : [
-            { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.56, 0.78] },
-            { t: 'SVP', c: '#3ddc84', anchor: [0.58, 0.74] },
-            { t: 'λ₁(L)', c: '#a7f3d0', anchor: [-0.68, 0.34] },
-            { t: 'LWE(n, q, χ)', c: '#3ddc84', anchor: [0.68, 0.12] },
-            { t: 'b₁*, ..., b_n*', c: '#a7f3d0', anchor: [0.58, -0.58] },
-            { t: '0x9f3a·c1b7', c: '#3ddc84', anchor: [0.18, -0.82] }
+            { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.72, 0.82] },
+            { t: 'SVP', c: '#3ddc84', anchor: [0.72, 0.80] },
+            { t: 'λ₁(L)', c: '#a7f3d0', anchor: [-0.78, 0.28] },
+            { t: 'LWE(n, q, χ)', c: '#3ddc84', anchor: [0.78, 0.20] },
+            { t: 'b₁*, ..., b_n*', c: '#a7f3d0', anchor: [0.72, -0.68] },
+            { t: '0x9f3a·c1b7', c: '#3ddc84', anchor: [-0.72, -0.78] }
           ];
 
       const mathLabels = mathLabelDefs.map((def, idx) => {
@@ -971,11 +975,17 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
           u.theta += u.orbit * dt;
           const r = u.radius + Math.sin(t * u.bobSpeed + u.bobPhase) * u.bobAmp;
 
-          tmpVec.set(
-            Math.sin(u.phi) * Math.cos(u.theta) * r * 1.35,
-            Math.cos(u.phi) * r * 0.85,
-            Math.sin(u.phi) * Math.sin(u.theta) * r
-          );
+          let posX = Math.sin(u.phi) * Math.cos(u.theta) * r * 1.45;
+          let posY = Math.cos(u.phi) * r * 0.95;
+          const posZ = Math.sin(u.phi) * Math.sin(u.theta) * r;
+
+          // Exclusion zone: keep cubes completely out of the middle text area
+          if (Math.abs(posX) < 3.0 && Math.abs(posY) < 2.2) {
+            const signX = posX >= 0 ? 1 : -1;
+            posX = signX * (3.0 + Math.abs(posX) * 0.35);
+          }
+
+          tmpVec.set(posX, posY, posZ);
 
           u.offTarget.set(0, 0, 0);
           if (ptr.active) {
