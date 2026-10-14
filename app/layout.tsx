@@ -38,7 +38,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ebGaramond.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} scroll-smooth h-full`}
+      data-scroll-behavior="smooth"
+      className={`${ebGaramond.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} h-full`}
     >
       <head>
         <Script

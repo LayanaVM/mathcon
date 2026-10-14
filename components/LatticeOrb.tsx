@@ -8,27 +8,36 @@ interface LatticeOrbProps {
   enableInteraction?: boolean;
 }
 
+type ThreeInstance = typeof THREE_TYPES & { REVISION?: string };
+
+function getWindowThree(): ThreeInstance | undefined {
+  if (typeof window === 'undefined') return undefined;
+  return (window as unknown as { THREE?: ThreeInstance }).THREE;
+}
+
 // Dynamically ensure Three.js r128 from CDNJS is loaded and ready
-function loadThreeR128(): Promise<any> {
+function loadThreeR128(): Promise<ThreeInstance> {
   if (typeof window === 'undefined') return Promise.reject();
-  if ((window as any).THREE && (window as any).THREE.REVISION === '128') {
-    return Promise.resolve((window as any).THREE);
-  }
-  if ((window as any).THREE) {
-    return Promise.resolve((window as any).THREE);
+  const globalThree = getWindowThree();
+  if (globalThree) {
+    return Promise.resolve(globalThree);
   }
 
   return new Promise((resolve) => {
     const existing = document.querySelector('script[src*="three.js/r128"]') as HTMLScriptElement | null;
     if (existing) {
-      if ((window as any).THREE) {
-        resolve((window as any).THREE);
+      const gThree = getWindowThree();
+      if (gThree) {
+        resolve(gThree);
         return;
       }
-      existing.addEventListener('load', () => resolve((window as any).THREE));
+      existing.addEventListener('load', () => {
+        const t = getWindowThree();
+        if (t) resolve(t);
+      });
       existing.addEventListener('error', async () => {
         const bundled = await import('three');
-        resolve(bundled);
+        resolve(bundled as unknown as ThreeInstance);
       });
       return;
     }
@@ -36,11 +45,14 @@ function loadThreeR128(): Promise<any> {
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
     script.async = true;
-    script.onload = () => resolve((window as any).THREE);
+    script.onload = () => {
+      const t = getWindowThree();
+      if (t) resolve(t);
+    };
     script.onerror = async () => {
       // Offline / fallback to local package if network is unavailable
       const bundled = await import('three');
-      resolve(bundled);
+      resolve(bundled as unknown as ThreeInstance);
     };
     document.head.appendChild(script);
   });
@@ -88,25 +100,25 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       const EMERALD = new THREE.Color(EMERALD_HEX);
       const CREAM = new THREE.Color(MINT_HEX);
 
-      // Safe WebGL context retrieval with shader precision polyfill
-      const gl = (canvas.getContext('webgl2', {
-        alpha: false,
-        antialias: !isMobile,
-        powerPreference: 'default',
-        stencil: false,
-        depth: true
-      }) ||
-        canvas.getContext('webgl', {
-          alpha: false,
+      let rawRenderer: THREE_TYPES.WebGLRenderer | undefined;
+      try {
+        rawRenderer = new THREE.WebGLRenderer({
+          canvas,
           antialias: !isMobile,
+          alpha: false,
           powerPreference: 'default',
           stencil: false,
-          depth: true
-        })) as (WebGLRenderingContext | WebGL2RenderingContext) | null;
+          precision: 'mediump'
+        });
+      } catch (err) {
+        console.error('[LatticeOrb] THREE.WebGLRenderer failed:', err);
+        return;
+      }
+      if (!rawRenderer) return;
+      const renderer = rawRenderer;
 
-      if (!gl) return;
-
-      if (typeof gl.getShaderPrecisionFormat === 'function') {
+      const gl = renderer.getContext();
+      if (gl && typeof gl.getShaderPrecisionFormat === 'function') {
         const origGetShaderPrecisionFormat = gl.getShaderPrecisionFormat.bind(gl);
         gl.getShaderPrecisionFormat = (shaderType: number, precisionType: number) => {
           try {
@@ -115,23 +127,6 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
           } catch {}
           return { rangeMin: 1, rangeMax: 1, precision: 23 };
         };
-      } else {
-        gl.getShaderPrecisionFormat = () => ({ rangeMin: 1, rangeMax: 1, precision: 23 });
-      }
-
-      let renderer: any;
-      try {
-        renderer = new THREE.WebGLRenderer({
-          canvas,
-          context: gl as WebGLRenderingContext,
-          antialias: !isMobile,
-          alpha: false,
-          powerPreference: 'default',
-          stencil: false,
-          precision: 'mediump'
-        });
-      } catch {
-        return;
       }
 
       renderer.setPixelRatio(dpr);
@@ -147,11 +142,11 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
         return d;
       };
 
-      function noDepth<T extends any>(mat: T): T {
-        (mat as any).depthWrite = false;
-        (mat as any).depthTest = false;
-        (mat as any).blending = THREE.NormalBlending;
-        (mat as any).transparent = true;
+      function noDepth<T extends THREE_TYPES.Material>(mat: T): T {
+        mat.depthWrite = false;
+        mat.depthTest = false;
+        mat.blending = THREE.NormalBlending;
+        mat.transparent = true;
         return mat;
       }
 
@@ -771,6 +766,17 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       resizeObserver.observe(container);
       handleResize();
 
+      let isVisible = true;
+      const intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]) {
+            isVisible = entries[0].isIntersecting;
+          }
+        },
+        { threshold: 0.01 }
+      );
+      intersectionObserver.observe(container);
+
       // Pointer & Touch Repulsion (Targeted only at floating cubes - Sphere itself must NOT react)
       const ptr = { x: 0, y: 0, active: false };
       const updatePointerCoords = (clientX: number, clientY: number) => {
@@ -840,6 +846,12 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
 
       function renderFrame(now: number) {
         animId = requestAnimationFrame(renderFrame);
+
+        if (!isVisible) {
+          lastTime = now;
+          return;
+        }
+
         const delta = now - lastTime;
 
         // Cap frame rate on mobile at 30 fps
@@ -927,7 +939,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
             orb.midLineGeo.attributes.position.needsUpdate = true;
             orb.midLineMat.opacity = 0.75 * (1 - 0.45 * scatterMagnitude);
           });
-          (scatterLabel.material as any).opacity = 0.85 * scatterMagnitude;
+          (scatterLabel.material as THREE_TYPES.SpriteMaterial).opacity = 0.85 * scatterMagnitude;
           isScattering = true;
         } else if (isScattering) {
           orbs.forEach((orb) => {
@@ -945,7 +957,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
             orb.midLineGeo.attributes.position.needsUpdate = true;
             orb.midLineMat.opacity = 0.75;
           });
-          (scatterLabel.material as any).opacity = 0;
+          (scatterLabel.material as THREE_TYPES.SpriteMaterial).opacity = 0;
           isScattering = false;
         }
 
@@ -1056,6 +1068,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       cleanupFn = () => {
         cancelAnimationFrame(animId);
         resizeObserver.disconnect();
+        intersectionObserver.disconnect();
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('touchmove', onTouchMove);
         window.removeEventListener('pointerup', onPointerDeactivate);
@@ -1066,8 +1079,11 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
             d.dispose();
           } catch {}
         });
-        renderer.dispose();
-        renderer.forceContextLoss();
+        if (renderer) {
+          try {
+            renderer.dispose();
+          } catch {}
+        }
       };
     });
 
@@ -1080,10 +1096,10 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
   return (
     <div
       ref={containerRef}
-      className={`absolute inset-0 pointer-events-none select-none overflow-hidden ${className}`}
+      className={`absolute inset-0 pointer-events-none select-none overflow-hidden bg-black ${className}`}
       aria-hidden="true"
     >
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block bg-black" />
     </div>
   );
 };

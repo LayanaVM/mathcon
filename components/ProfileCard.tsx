@@ -1,9 +1,22 @@
 'use client';
 
-import { memo, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import './ProfileCard.css';
 
-const THEMES = {
+export interface ProfileCardProps {
+  avatarUrl?: string;
+  name?: string;
+  theme?: 'dark' | 'light';
+  backdropColor?: string;
+  radius?: number;
+  enableTilt?: boolean;
+  tiltStrength?: number;
+  enableMobileTilt?: boolean;
+  mobileTiltSensitivity?: number;
+  className?: string;
+}
+
+const THEMES: Record<'dark' | 'light', Record<string, string>> = {
   dark: {
     '--pc-frame': 'rgba(38, 35, 46, 0.66)',
     '--pc-frame-edge': 'rgba(255, 255, 255, 0.08)',
@@ -26,9 +39,15 @@ const THEMES = {
   }
 };
 
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-const ProfileCard = ({
+interface Engine {
+  aim: (nx: number, ny: number) => void;
+  release: () => void;
+  write: () => void;
+}
+
+const ProfileCard: React.FC<ProfileCardProps> = ({
   avatarUrl = '',
   name = '',
   theme = 'dark',
@@ -40,8 +59,8 @@ const ProfileCard = ({
   mobileTiltSensitivity = 5,
   className = ''
 }) => {
-  const rootRef = useRef(null);
-  const engineRef = useRef(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const engineRef = useRef<Engine | null>(null);
   const settingsRef = useRef({ enableTilt, tiltStrength, mobileTiltSensitivity });
 
   useEffect(() => {
@@ -57,7 +76,7 @@ const ProfileCard = ({
     const y = { p: 0, v: 0, target: 0 };
     let raf = 0;
     let last = 0;
-    let touchId = null;
+    let touchId: number | null = null;
 
     const write = () => {
       const { enableTilt: tiltOn, tiltStrength: strength } = settingsRef.current;
@@ -67,7 +86,7 @@ const ProfileCard = ({
       style.setProperty('--pc-rotate-y', `${(-x.p * angle).toFixed(3)}deg`);
     };
 
-    const frame = now => {
+    const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000 || 0);
       last = now;
       const stiffness = 120;
@@ -102,13 +121,13 @@ const ProfileCard = ({
       raf = requestAnimationFrame(frame);
     };
 
-    const aim = (nx, ny) => {
+    const aim = (nx: number, ny: number) => {
       x.target = clamp(nx, -1, 1);
       y.target = clamp(ny, -1, 1);
       wake();
     };
 
-    const aimAt = event => {
+    const aimAt = (event: PointerEvent) => {
       const rect = root.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
       aim(((event.clientX - rect.left) / rect.width) * 2 - 1, ((event.clientY - rect.top) / rect.height) * 2 - 1);
@@ -116,32 +135,32 @@ const ProfileCard = ({
 
     const release = () => aim(0, 0);
 
-    const onEnter = event => {
+    const onEnter = (event: PointerEvent) => {
       if (event.pointerType === 'mouse') aimAt(event);
     };
-    const onMove = event => {
+    const onMove = (event: PointerEvent) => {
       if (event.pointerType === 'mouse' || event.pointerId === touchId) aimAt(event);
     };
-    const onLeave = event => {
+    const onLeave = (event: PointerEvent) => {
       if (event.pointerType === 'mouse') release();
     };
-    const onDown = event => {
+    const onDown = (event: PointerEvent) => {
       if (event.pointerType === 'mouse') return;
       touchId = event.pointerId;
       aimAt(event);
     };
-    const onUp = event => {
+    const onUp = (event: PointerEvent) => {
       if (event.pointerId !== touchId) return;
       touchId = null;
       release();
     };
 
-    root.addEventListener('pointerenter', onEnter);
-    root.addEventListener('pointermove', onMove);
-    root.addEventListener('pointerleave', onLeave);
-    root.addEventListener('pointerdown', onDown);
-    root.addEventListener('pointerup', onUp);
-    root.addEventListener('pointercancel', onUp);
+    root.addEventListener('pointerenter', onEnter, { passive: true });
+    root.addEventListener('pointermove', onMove, { passive: true });
+    root.addEventListener('pointerleave', onLeave, { passive: true });
+    root.addEventListener('pointerdown', onDown, { passive: true });
+    root.addEventListener('pointerup', onUp, { passive: true });
+    root.addEventListener('pointercancel', onUp, { passive: true });
 
     engineRef.current = { aim, release, write };
     write();
@@ -167,7 +186,7 @@ const ProfileCard = ({
     if (!root || !enableMobileTilt) return;
 
     let listening = false;
-    const onOrientation = event => {
+    const onOrientation = (event: DeviceOrientationEvent) => {
       if (event.beta == null || event.gamma == null) return;
       const sensitivity = settingsRef.current.mobileTiltSensitivity;
       engineRef.current?.aim((event.gamma * sensitivity) / 150, ((event.beta - 20) * sensitivity) / 150);
@@ -178,7 +197,7 @@ const ProfileCard = ({
       window.addEventListener('deviceorientation', onOrientation);
     };
     const onClick = () => {
-      const Motion = window.DeviceOrientationEvent;
+      const Motion = (window as unknown as { DeviceOrientationEvent?: { requestPermission?: () => Promise<string> } }).DeviceOrientationEvent;
       if (Motion && typeof Motion.requestPermission === 'function') {
         Motion.requestPermission()
           .then(state => {
@@ -210,7 +229,7 @@ const ProfileCard = ({
         ...THEMES[palette],
         '--pc-radius': `${Math.max(0, radius)}px`,
         '--pc-backdrop': backdrop
-      }}
+      } as React.CSSProperties}
     >
       <div className="profile-card__body">
         <div className="profile-card__tile">

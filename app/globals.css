@@ -29,19 +29,6 @@
   background-size: 40px 40px;
 }
 
-.chalk-formula {
-  font-family: var(--font-serif);
-  font-style: italic;
-  color: rgba(143, 191, 168, 0.28);
-  user-select: none;
-  pointer-events: none;
-}
-
-.nav-blur {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;

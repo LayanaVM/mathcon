@@ -2,6 +2,9 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import eventData from "@/data/event.json";
 import aboutData from "@/data/about.json";
 import topicsData from "@/data/topics.json";
@@ -9,12 +12,9 @@ import contactData from "@/data/contact.json";
 import LatticeOrb from "@/components/LatticeOrb";
 import ProfileCard from "@/components/ProfileCard";
 
-
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const organizersSectionRef = useRef<HTMLElement>(null);
   const cardsTrackRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [translateX, setTranslateX] = useState(0);
 
   useEffect(() => {
@@ -30,7 +30,6 @@ export default function Home() {
 
       const scrolled = -rect.top;
       const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
-      setScrollProgress(progress);
 
       const maxScroll = Math.max(0, track.scrollWidth - window.innerWidth + 96);
       setTranslateX(progress * maxScroll);
@@ -70,108 +69,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 0. TOP NAVIGATION (ATTACHED TO TOP, TRANSPARENT) */}
       {/* ========================================== */}
-      <header className="fixed top-0 inset-x-0 z-50 bg-transparent transition-all duration-200">
-        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-20 h-20 sm:h-24 flex items-center justify-between">
-          <a
-            className="flex items-center gap-3.5 group focus:outline-none focus:ring-2 focus:ring-brand-accent rounded-lg p-1"
-            href="#hero"
-          >
-            <div className="w-11 h-11 rounded-md bg-brand-forestDark/80 border border-brand-sage/40 flex items-center justify-center text-brand-accent font-serif font-bold text-2xl shadow-inner group-hover:border-brand-accent transition-colors">
-              Ψ
-            </div>
-            <span className="font-serif font-bold tracking-wide text-brand-cream text-xl sm:text-2xl block leading-none">
-              {eventData.shortName}
-            </span>
-          </a>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-5 lg:gap-8 xl:gap-10 text-base lg:text-lg font-medium">
-            <a
-              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
-              href="#hero"
-            >
-              Home
-            </a>
-            <a
-              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
-              href="#about"
-            >
-              About
-            </a>
-            <a
-              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
-              href="#topics"
-            >
-              Topics
-            </a>
-            <a
-              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
-              href="#contact"
-            >
-              Contact
-            </a>
-            <a
-              className="ml-4 lg:ml-6 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm sm:text-base tracking-wider uppercase px-6 py-2.5 rounded-md transition-all shadow-md flex items-center gap-2"
-              href="#contact"
-            >
-              <span>Register</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-              </svg>
-            </a>
-          </nav>
-
-          {/* Mobile Menu Toggle Button */}
-          <button
-            aria-label="Toggle Navigation Menu"
-            className="md:hidden text-brand-cream hover:text-brand-accent p-2 rounded focus:outline-none focus:ring-2 focus:ring-brand-accent"
-            id="mobileMenuBtn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-              )}
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Dropdown */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-brand-forestDark/95 backdrop-blur-md border-b border-brand-sage/20 px-6 pt-3 pb-6 space-y-2 shadow-2xl" id="mobileMenu">
-            <a
-              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
-              href="#hero"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Home
-            </a>
-            <a
-              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              About
-            </a>
-            <a
-              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
-              href="#topics"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Topics to Cover
-            </a>
-            <a
-              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Contact & Conveners
-            </a>
-          </div>
-        )}
-      </header>
+      <Navbar />
 
       {/* ========================================== */}
       {/* 1. HERO SECTION                            */}
@@ -185,11 +83,6 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="hero-container">
           <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
-            {/* Eyebrow badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#050806] border border-[#3ddc84]/30 text-xs font-mono text-[#3ddc84] mb-6 shadow-sm">
-
-            </div>
-
             {/* Main Title - Center Aligned */}
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 leading-[1.15] text-center max-w-4xl">
               {eventData.title}
@@ -294,7 +187,6 @@ export default function Home() {
           <div className="max-w-7xl mx-auto w-full mb-6 shrink-0">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#3ddc84]/20">
               <div>
-
                 <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
                   Organizing Institutions & Centres
                 </h2>
@@ -431,16 +323,15 @@ export default function Home() {
                 Original research manuscripts, review papers, and technical implementation blueprints in any of the {topicsData.topics.length} conference tracks are invited for peer-reviewed presentation and proceedings.
               </p>
               <div className="flex flex-wrap items-center gap-4">
-                <a
+                <Link
                   className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3 rounded-lg transition-all shadow-md inline-flex items-center gap-2"
-                  href="#contact"
+                  href="/register"
                 >
-                  <span>Submit Abstract / Contact Conveners</span>
+                  <span>Submit Abstract / Register Online</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                   </svg>
-                </a>
-
+                </Link>
               </div>
             </div>
           </div>
@@ -521,84 +412,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 6. FOOTER                                  */}
       {/* ========================================== */}
-      <footer className="bg-black text-brand-cream border-t border-[#3ddc84]/20 py-14 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-[#3ddc84]/15">
-            <div className="md:col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded bg-[#0a0f0d] border border-[#3ddc84]/40 flex items-center justify-center text-brand-accent font-serif font-bold text-lg">
-                  Ψ
-                </div>
-                <span className="font-serif font-bold text-xl text-white">
-                  {eventData.shortName}
-                </span>
-              </div>
-              <p className="text-xs text-brand-accent font-mono tracking-wide" id="footer-dates-banner">
-                {eventData.dates.display}
-              </p>
-              <p className="text-sm text-[#d4e5dc]/80 max-w-md leading-relaxed">
-                {eventData.title}
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider text-[#3ddc84] font-semibold mb-4">
-                Quick Navigation
-              </h4>
-              <ul className="space-y-2 text-sm text-[#d4e5dc]/80">
-                <li>
-                  <a className="hover:text-brand-accent transition-colors" href="#hero">
-                    Home & Event Overview
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-brand-accent transition-colors" href="#about">
-                    About IWCMPQC
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-brand-accent transition-colors" href="#organizers">
-                    Participating Institutions
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-brand-accent transition-colors" href="#topics">
-                    Topics & Scope
-                  </a>
-                </li>
-                <li>
-                  <a className="hover:text-brand-accent transition-colors" href="#contact">
-                    Conveners & Inquiries
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider text-[#3ddc84] font-semibold mb-4">
-                Organized By
-              </h4>
-              <div className="space-y-3 text-xs text-[#d4e5dc]/80" id="footer-organizers-list">
-                {eventData.organizers.map((org) => (
-                  <div key={org.id} className="border-l-2 border-[#3ddc84]/40 pl-3">
-                    <div className="font-medium text-white">{org.institution}</div>
-                    <div className="text-[11px] text-[#a2c4b5]">
-                      {org.department} ({org.type}) · {org.location}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#a2c4b5] font-mono">
-            <p>© 2027 IWCMPQC Joint Academic Secretariat. All rights reserved.</p>
-            <p>
-              Gandhigram Rural Institute (GRI) & Cochin University of Science and Technology (CUSAT)
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div >
+      <Footer />
+    </div>
   );
 }
