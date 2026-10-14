@@ -241,9 +241,9 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Joint Institutional Collaboration (GRI × CUSAT) moved from Hero into About section */}
-          <div className="mt-10 mb-10 p-6 sm:p-8 rounded-2xl bg-[#0a0f0d] border border-[#3ddc84]/25 shadow-xl" id="about-joint-institutions">
-            <div className="text-center mb-6">
+          {/* Joint Institutional Collaboration (GRI × CUSAT) */}
+          <div className="mt-12 pt-8 border-t border-[#3ddc84]/15" id="about-joint-institutions">
+            <div className="text-center mb-4">
               <span className="text-xs font-mono uppercase tracking-widest text-[#3ddc84] font-semibold">
                 Joint Organizing Institutions & Academic Partners
               </span>
@@ -257,9 +257,6 @@ export default function Home() {
                 <p className="text-xs sm:text-sm text-[#a2c4b5] font-sans leading-relaxed">
                   {griOrg.department}
                 </p>
-                <span className="inline-block mt-2 text-[11px] font-mono text-[#3ddc84] bg-[#050806] px-2.5 py-1 rounded border border-[#3ddc84]/30">
-                  Host: Workshop ({griOrg.dates.display})
-                </span>
               </div>
 
               {/* Big '×' in between */}
@@ -278,48 +275,6 @@ export default function Home() {
                 <p className="text-xs sm:text-sm text-[#a2c4b5] font-sans leading-relaxed">
                   {cusatOrg.department}
                 </p>
-                <span className="inline-block mt-2 text-[11px] font-mono text-[#3ddc84] bg-[#050806] px-2.5 py-1 rounded border border-[#3ddc84]/30">
-                  Host: Conference ({cusatOrg.dates.display})
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Highlights Bar */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-[#3ddc84]/20">
-            <div className="bg-[#0a0f0d] backdrop-blur-sm p-6 rounded-xl border border-[#3ddc84]/20 shadow-md hover:border-[#3ddc84]/40 transition-all">
-              <div className="text-xs font-mono uppercase text-[#3ddc84] mb-1 font-semibold">
-                Part 1: International Workshop
-              </div>
-              <div className="font-serif text-xl font-bold text-white">
-                {griOrg.dates.display}
-              </div>
-              <div className="text-sm text-[#a2c4b5] mt-1.5 leading-relaxed">
-                Foundational Mathematical Frameworks & Hands-on Quantum Labs ({griOrg.location})
-              </div>
-            </div>
-
-            <div className="bg-[#0a0f0d] backdrop-blur-sm p-6 rounded-xl border border-[#3ddc84]/20 shadow-md hover:border-[#3ddc84]/40 transition-all">
-              <div className="text-xs font-mono uppercase text-[#3ddc84] mb-1 font-semibold">
-                Part 2: International Conference
-              </div>
-              <div className="font-serif text-xl font-bold text-white">
-                {cusatOrg.dates.display}
-              </div>
-              <div className="text-sm text-[#a2c4b5] mt-1.5 leading-relaxed">
-                Peer-Reviewed Papers, Keynotes & Cryptanalytic Defenses ({cusatOrg.location})
-              </div>
-            </div>
-
-            <div className="bg-[#0a0f0d] backdrop-blur-sm p-6 rounded-xl border border-[#3ddc84]/20 shadow-md hover:border-[#3ddc84]/40 transition-all">
-              <div className="text-xs font-mono uppercase text-[#3ddc84] mb-1 font-semibold">
-                Target Community
-              </div>
-              <div className="font-serif text-xl font-bold text-white">
-                Global PQC Assembly
-              </div>
-              <div className="text-sm text-[#a2c4b5] mt-1.5 leading-relaxed">
-                Cryptographers, Mathematicians, Cybersecurity Engineers & R&D Leaders
               </div>
             </div>
           </div>
@@ -432,7 +387,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 4. TOPICS TO BE COVERED                    */}
       {/* ========================================== */}
-      <section className="py-20 bg-[#082216] border-b border-[#3ddc84]/15 relative scroll-mt-24" id="topics">
+      <section className="py-20 bg-black border-b border-[#3ddc84]/15 relative scroll-mt-24" id="topics">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -454,14 +409,14 @@ export default function Home() {
                 radius={16}
                 enableTilt={true}
                 theme="dark"
-                backdropColor="#0c3020"
+                backdropColor="#0a0f0d"
                 className="w-full"
               />
             ))}
           </div>
 
           {/* Call for Papers Banner Box */}
-          <div className="mt-14 rounded-2xl bg-gradient-to-br from-[#0c3321] to-[#071f14] text-white p-8 sm:p-10 relative overflow-hidden border border-[#3ddc84]/30 shadow-xl">
+          <div className="mt-14 rounded-2xl bg-[#0a0f0d] text-white p-8 sm:p-10 relative overflow-hidden border border-[#3ddc84]/25 shadow-2xl">
             <div className="absolute -right-10 -bottom-10 opacity-15 font-serif text-8xl italic text-[#3ddc84] pointer-events-none select-none" aria-hidden="true">
               LWE
             </div>
@@ -485,9 +440,7 @@ export default function Home() {
                     <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                   </svg>
                 </a>
-                <span className="text-xs text-[#3ddc84] font-mono">
-                  Proceedings indexed with leading academic publishers
-                </span>
+
               </div>
             </div>
           </div>
@@ -497,92 +450,70 @@ export default function Home() {
       {/* ========================================== */}
       {/* 5. CONTACT & CONVENERS                     */}
       {/* ========================================== */}
-      <section className="py-20 bg-[#0a2a1a] border-b border-[#3ddc84]/15 scroll-mt-24" id="contact">
+      <section className="py-20 bg-black border-b border-[#3ddc84]/15 scroll-mt-24" id="contact">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-2 mb-3">
-
-            </div>
+          <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              {contactData.title || "Contact & Conveners"}
+              {contactData.title || "Contact Details"}
             </h2>
             <p className="text-[#a2c4b5] text-base sm:text-lg">
-              For workshop registrations, paper submissions, accommodation inquiries, and sponsorship partnerships, reach out directly to the event conveners.
+              For registrations, paper submissions, accommodation inquiries, and partnerships, reach out directly to the event convener.
             </p>
           </div>
 
-          {/* Contact Directory Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" id="contact-cards-container">
+          {/* Contact Details (Clean & Unboxed) */}
+          <div className="max-w-2xl mx-auto text-center" id="contact-cards-container">
             {contactData.contacts.map((c) => (
-              <div
-                key={c.name}
-                className="bg-[#0d3121]/80 backdrop-blur-sm rounded-2xl border border-[#3ddc84]/20 p-8 shadow-md hover:border-[#3ddc84]/40 transition-all relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#3ddc84]/10 rounded-bl-full pointer-events-none -z-0" />
+              <div key={c.name} className="flex flex-col items-center">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#3ddc84] font-semibold block mb-2">
+                  {c.role}
+                </span>
+                <h3 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-2">
+                  {c.name}
+                </h3>
+                <p className="text-base font-semibold text-[#3ddc84] mb-1">{c.designation}</p>
+                <p className="text-sm text-[#a2c4b5] leading-relaxed mb-8">
+                  {c.department} · <span className="font-medium text-white">{c.institution}</span>
+                </p>
 
-                <div className="relative z-10">
-                  <span className="inline-block bg-[#071a11] text-[#3ddc84] border border-[#3ddc84]/30 text-xs font-mono uppercase tracking-wider font-semibold px-3 py-1 rounded-md mb-4">
-                    {c.role}
-                  </span>
-                  <h3 className="font-serif text-2xl font-bold text-white mb-1">
-                    {c.name}
-                  </h3>
-                  <p className="text-sm font-semibold text-[#3ddc84] mb-1">{c.designation}</p>
-                  <p className="text-xs text-[#a2c4b5] leading-relaxed mb-6">
-                    {c.department}
-                    <br />
-                    <span className="font-medium text-white">{c.institution}</span>
-                  </p>
+                {/* Clickable tel and mailto links */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 pt-6 border-t border-[#3ddc84]/20 text-sm w-full">
+                  <a
+                    href={`tel:${c.phone.replace(/[^0-9+]/g, "")}`}
+                    className="flex items-center gap-3 text-[#3ddc84] hover:text-white font-mono transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-[#0a0f0d] border border-[#3ddc84]/30 flex items-center justify-center text-[#3ddc84] group-hover:bg-[#3ddc84] group-hover:text-black transition-all shadow-sm">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-base font-medium">{c.phone}</span>
+                  </a>
 
-                  <div className="text-xs text-[#d4e5dc] bg-[#071a11]/90 p-3 rounded-lg border border-[#3ddc84]/20 mb-6">
-                    <span className="font-semibold block mb-0.5 text-[#3ddc84]">Inquiry Focus:</span>
-                    Conference Paper Submissions, Review Process, Registrations & Venue Inquiries
-                  </div>
-
-                  {/* Clickable tel and mailto links */}
-                  <div className="space-y-3 pt-4 border-t border-[#3ddc84]/20 text-sm">
-                    <a
-                      href={`tel:${c.phone.replace(/[^0-9+]/g, "")}`}
-                      className="flex items-center gap-3 text-[#3ddc84] hover:text-white font-mono transition-colors group"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#071a11] border border-[#3ddc84]/30 flex items-center justify-center text-[#3ddc84] group-hover:border-[#3ddc84] transition-colors">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                          />
-                        </svg>
-                      </div>
-                      <span>{c.phone}</span>
-                    </a>
-
-                    <a
-                      href={`mailto:${c.email}`}
-                      className="flex items-center gap-3 text-[#3ddc84] hover:text-white font-mono transition-colors group"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-[#071a11] border border-[#3ddc84]/30 flex items-center justify-center text-[#3ddc84] group-hover:border-[#3ddc84] transition-colors">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                          />
-                        </svg>
-                      </div>
-                      <span className="break-all">{c.email}</span>
-                    </a>
-                  </div>
+                  <a
+                    href={`mailto:${c.email}`}
+                    className="flex items-center gap-3 text-[#3ddc84] hover:text-white font-mono transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-[#0a0f0d] border border-[#3ddc84]/30 flex items-center justify-center text-[#3ddc84] group-hover:bg-[#3ddc84] group-hover:text-black transition-all shadow-sm">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-base font-medium break-all">{c.email}</span>
+                  </a>
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Quick Inquiry / Advisory Note */}
-          <div className="mt-12 p-6 rounded-xl bg-[#0d3121]/60 border border-[#3ddc84]/20 text-center text-sm text-[#a2c4b5] max-w-2xl mx-auto shadow-sm">
-            <span className="font-semibold text-[#3ddc84]">Note for International Delegates:</span> Official invitation letters for visa processing and travel clearance are issued by the respective host institutions upon registration confirmation.
           </div>
         </div>
       </section>
@@ -590,12 +521,12 @@ export default function Home() {
       {/* ========================================== */}
       {/* 6. FOOTER                                  */}
       {/* ========================================== */}
-      <footer className="bg-[#06170f] text-brand-cream border-t border-[#3ddc84]/20 py-14 mt-auto">
+      <footer className="bg-black text-brand-cream border-t border-[#3ddc84]/20 py-14 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-[#3ddc84]/15">
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded bg-[#0a2a1a] border border-[#3ddc84]/40 flex items-center justify-center text-brand-accent font-serif font-bold text-lg">
+                <div className="w-9 h-9 rounded bg-[#0a0f0d] border border-[#3ddc84]/40 flex items-center justify-center text-brand-accent font-serif font-bold text-lg">
                   Ψ
                 </div>
                 <span className="font-serif font-bold text-xl text-white">
