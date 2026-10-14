@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const ebGaramond = EB_Garamond({
@@ -39,7 +40,13 @@ export default function RootLayout({
       lang="en"
       className={`${ebGaramond.variable} ${plusJakartaSans.variable} ${jetbrainsMono.variable} scroll-smooth h-full`}
     >
-      <body className="min-h-full flex flex-col bg-brand-cream text-brand-ink font-sans antialiased selection:bg-brand-sage selection:text-brand-forest">
+      <head>
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+          strategy="beforeInteractive"
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-black text-[#d4e5dc] font-sans antialiased selection:bg-[#3ddc84]/30 selection:text-white">
         {children}
       </body>
     </html>

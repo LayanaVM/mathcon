@@ -1,99 +1,121 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import eventData from "@/data/event.json";
 import aboutData from "@/data/about.json";
 import topicsData from "@/data/topics.json";
 import contactData from "@/data/contact.json";
-import Threads from "@/components/Threads";
+import LatticeOrb from "@/components/LatticeOrb";
 import ProfileCard from "@/components/ProfileCard";
 
 
-// Contextual badges for organizer tabs
-const organizerBadges: Record<string, string> = {
-  gri: "Deemed to be University · Tamil Nadu",
-  cmmqc: "Host: Workshop (22–24 Feb)",
-  cusat: "NAAC A+ Accredited · Kerala",
-  "cusat-maths": "Host: Conference (25–27 Feb)",
-};
-
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeOrganizerTab, setActiveOrganizerTab] = useState(0);
+  const organizersSectionRef = useRef<HTMLElement>(null);
+  const cardsTrackRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [translateX, setTranslateX] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!organizersSectionRef.current || !cardsTrackRef.current) return;
+      const section = organizersSectionRef.current;
+      const track = cardsTrackRef.current;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const scrollableDistance = section.offsetHeight - windowHeight;
+
+      if (scrollableDistance <= 0) return;
+
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+      setScrollProgress(progress);
+
+      const maxScroll = Math.max(0, track.scrollWidth - window.innerWidth + 96);
+      setTranslateX(progress * maxScroll);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  const scrollStep = (direction: "left" | "right") => {
+    if (!organizersSectionRef.current) return;
+    const section = organizersSectionRef.current;
+    const windowHeight = window.innerHeight;
+    const scrollableDistance = section.offsetHeight - windowHeight;
+    const delta = direction === "right" ? scrollableDistance / 3 : -scrollableDistance / 3;
+    window.scrollBy({ top: delta, behavior: "smooth" });
+  };
 
   // About IWCMPQC section from data/about.json
   const iwcmpqcAbout = aboutData.sections.find((s) => s.id === "iwcmpqc");
 
-  // Institutional tabs from data/about.json (excluding the general about section)
+  // Institutional sections from data/about.json (excluding the general about section)
   const organizerSections = aboutData.sections.filter((s) => s.id !== "iwcmpqc");
-  const activeSection = organizerSections[activeOrganizerTab] || organizerSections[0];
 
   const griOrg = eventData.organizers.find((o) => o.id === "gri") || eventData.organizers[0];
   const cusatOrg = eventData.organizers.find((o) => o.id === "cusat") || eventData.organizers[1];
 
   return (
-    <div className="min-h-screen flex flex-col bg-brand-cream text-brand-ink selection:bg-brand-sage selection:text-brand-forest">
+    <div className="min-h-screen flex flex-col bg-black text-[#d4e5dc] selection:bg-[#3ddc84]/30 selection:text-white">
       {/* ========================================== */}
-      {/* 0. STICKY TOP NAVIGATION                   */}
       {/* ========================================== */}
-      <header className="sticky top-0 z-50 bg-brand-forest/95 nav-blur border-b border-brand-sage/20 transition-all duration-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      {/* 0. TOP NAVIGATION (ATTACHED TO TOP, TRANSPARENT) */}
+      {/* ========================================== */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-transparent transition-all duration-200">
+        <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-20 h-20 sm:h-24 flex items-center justify-between">
           <a
-            className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-accent rounded-lg p-1"
+            className="flex items-center gap-3.5 group focus:outline-none focus:ring-2 focus:ring-brand-accent rounded-lg p-1"
             href="#hero"
           >
-            <div className="w-10 h-10 rounded-md bg-brand-forestDark border border-brand-sage/40 flex items-center justify-center text-brand-accent font-serif font-bold text-xl shadow-inner group-hover:border-brand-accent transition-colors">
+            <div className="w-11 h-11 rounded-md bg-brand-forestDark/80 border border-brand-sage/40 flex items-center justify-center text-brand-accent font-serif font-bold text-2xl shadow-inner group-hover:border-brand-accent transition-colors">
               Ψ
             </div>
-            <div>
-              <span className="font-serif font-bold tracking-wide text-brand-cream text-lg block leading-none">
-                {eventData.shortName}
-              </span>
-              <span className="text-[11px] text-brand-sage tracking-widest font-mono uppercase">
-                {eventData.dates.display}
-              </span>
-            </div>
+            <span className="font-serif font-bold tracking-wide text-brand-cream text-xl sm:text-2xl block leading-none">
+              {eventData.shortName}
+            </span>
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-5 lg:gap-8 xl:gap-10 text-base lg:text-lg font-medium">
             <a
-              className="text-brand-cream/80 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
+              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
               href="#hero"
             >
               Home
             </a>
             <a
-              className="text-brand-cream/80 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
+              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
               href="#about"
             >
               About
             </a>
             <a
-              className="text-brand-cream/80 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
-              href="#organizers"
-            >
-              Organizers
-            </a>
-            <a
-              className="text-brand-cream/80 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
+              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
               href="#topics"
             >
               Topics
             </a>
             <a
-              className="text-brand-cream/80 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
+              className="text-brand-cream/90 hover:text-brand-accent px-3 py-2 rounded-md transition-colors"
               href="#contact"
             >
               Contact
             </a>
             <a
-              className="ml-4 bg-brand-accent text-brand-forestDark hover:bg-[#f0b58e] active:scale-95 font-semibold text-xs tracking-wider uppercase px-4 py-2.5 rounded-md transition-all shadow-sm flex items-center gap-1.5"
+              className="ml-4 lg:ml-6 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm sm:text-base tracking-wider uppercase px-6 py-2.5 rounded-md transition-all shadow-md flex items-center gap-2"
               href="#contact"
             >
-              <span>Inquire / Register</span>
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span>Register</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               </svg>
             </a>
@@ -106,7 +128,7 @@ export default function Home() {
             id="mobileMenuBtn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileMenuOpen ? (
                 <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               ) : (
@@ -118,37 +140,30 @@ export default function Home() {
 
         {/* Mobile Dropdown */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-brand-forestDark border-b border-brand-sage/20 px-4 pt-2 pb-6 space-y-2" id="mobileMenu">
+          <div className="md:hidden bg-brand-forestDark/95 backdrop-blur-md border-b border-brand-sage/20 px-6 pt-3 pb-6 space-y-2 shadow-2xl" id="mobileMenu">
             <a
-              className="block text-brand-cream/90 hover:text-brand-accent py-2 px-3 rounded hover:bg-brand-forest"
+              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
               href="#hero"
               onClick={() => setMobileMenuOpen(false)}
             >
               Home
             </a>
             <a
-              className="block text-brand-cream/90 hover:text-brand-accent py-2 px-3 rounded hover:bg-brand-forest"
+              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
               href="#about"
               onClick={() => setMobileMenuOpen(false)}
             >
               About
             </a>
             <a
-              className="block text-brand-cream/90 hover:text-brand-accent py-2 px-3 rounded hover:bg-brand-forest"
-              href="#organizers"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Organizers
-            </a>
-            <a
-              className="block text-brand-cream/90 hover:text-brand-accent py-2 px-3 rounded hover:bg-brand-forest"
+              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
               href="#topics"
               onClick={() => setMobileMenuOpen(false)}
             >
               Topics to Cover
             </a>
             <a
-              className="block text-brand-cream/90 hover:text-brand-accent py-2 px-3 rounded hover:bg-brand-forest"
+              className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -161,121 +176,35 @@ export default function Home() {
       {/* ========================================== */}
       {/* 1. HERO SECTION                            */}
       {/* ========================================== */}
-      <section className="relative lattice-pattern text-brand-cream overflow-hidden py-16 lg:py-24 border-b border-brand-forestLight/60" id="hero">
-        {/* Dynamic Wave Threads Background from React Bits */}
-        <div className="absolute inset-0 z-0 opacity-70 pointer-events-none" aria-hidden="true">
-          <Threads
-            color="#8FBFA8"
-            accentColor="#E8A87C"
-            lineCount={90}
-            thickness={0.6}
-            softness={1.3}
-            amplitude={1.7}
-            distance={0.4}
-            waves={1.05}
-            speed={0.6}
-            split={0.04}
-            fray={0.5}
-            angle={25}
-            taper={0.6}
-            brightness={1.4}
-            parting={0}
-            enableMouseInteraction={true}
-            fade={0.2}
-            opacity={0.85}
-          />
-        </div>
+      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-28 sm:pt-32 lg:pt-36 pb-36 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[96vh] flex items-center justify-center" id="hero">
+        {/* Lattice Orb 3D WebGL Visualization */}
+        <LatticeOrb />
 
-        {/* Cryptographic Mathematical Decorative Background Chalk Elements */}
-        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-[1]" aria-hidden="true">
-          <div className="chalk-formula text-3xl lg:text-5xl top-8 right-12 absolute opacity-40">
-            ∫ f(x) dx
-          </div>
-          <div className="chalk-formula text-4xl lg:text-6xl bottom-16 right-20 absolute opacity-50">
-            e^{"{"}iπ{"}"} + 1 = 0
-          </div>
-          <div className="chalk-formula text-2xl lg:text-3xl top-1/2 left-8 -translate-y-1/2 absolute opacity-30 font-mono">
-            Λ = {"{"} Σ v_i z_i | z_i ∈ ℤ {"}"}
-          </div>
-          <div className="chalk-formula text-3xl bottom-8 left-1/4 absolute opacity-25">
-            SVP_γ(L) ⊆ LWE_{"{"}n,q,χ{"}"}
-          </div>
-          <svg className="absolute -right-20 -bottom-20 w-96 h-96 text-brand-sage/10" fill="currentColor" viewBox="0 0 200 200">
-            <polygon fill="none" points="100,10 190,60 190,160 100,190 10,160 10,60" stroke="currentColor" strokeDasharray="4,4" strokeWidth="1.5" />
-            <line stroke="currentColor" strokeWidth="1" x1="100" x2="100" y1="10" y2="190" />
-            <line stroke="currentColor" strokeWidth="1" x1="10" x2="190" y1="60" y2="160" />
-            <line stroke="currentColor" strokeWidth="1" x1="10" x2="190" y1="160" y2="60" />
-          </svg>
-        </div>
+        {/* Deep contrast dark vignette / gradient overlay to keep background dark pure black and typography legible */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none z-[1]" aria-hidden="true" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="hero-container">
-          <div className="max-w-4xl">
-            {/* Event Badge with Accent Highlight */}
-            <div className="inline-flex items-center gap-3 bg-brand-forestDark/80 border border-brand-sage/40 px-3.5 py-1.5 rounded-full mb-6 text-xs sm:text-sm font-mono tracking-wider">
-              <span className="w-2.5 h-2.5 rounded-full bg-brand-accent animate-ping" />
-              <span className="text-brand-accent font-bold">{eventData.shortName}</span>
-              <span className="text-brand-sage">|</span>
-              <span className="text-brand-cream/90 font-medium">{eventData.dates.display}</span>
+          <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
+            {/* Eyebrow badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#050806] border border-[#3ddc84]/30 text-xs font-mono text-[#3ddc84] mb-6 shadow-sm">
+
             </div>
 
-            {/* Main Title */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6 leading-[1.15]">
+            {/* Main Title - Center Aligned */}
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 leading-[1.15] text-center max-w-4xl">
               {eventData.title}
             </h1>
 
-            {/* Tagline */}
-            <p className="text-base sm:text-xl text-brand-cream/80 max-w-3xl mb-10 leading-relaxed font-sans font-light">
-              Bridging Hard Mathematical Formulations, Lattice-Based Proofs, and Resilient Quantum-Era Cybersecurity
-            </p>
-
-            {/* Dual Institutional Collaboration Badges with Logos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-              {/* Org 1: GRI */}
-              <div className="bg-brand-forestDark/85 border border-brand-sage/30 rounded-xl p-4 flex items-center gap-4 hover:border-brand-sage transition-all">
-                <div className="w-14 h-14 shrink-0 rounded-lg bg-white/10 border border-brand-sage/20 flex items-center justify-center p-1.5 overflow-hidden">
-                  <Image
-                    src={`/${griOrg.logo}`}
-                    alt="GRI Logo"
-                    width={56}
-                    height={56}
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-                <div>
-                  <span className="text-[10px] font-mono tracking-wider text-brand-accent uppercase block">
-                    {griOrg.type} ({griOrg.dates.display})
-                  </span>
-                  <div className="font-semibold text-white text-sm line-clamp-1">{griOrg.department}</div>
-                  <div className="text-xs text-brand-sage/90">{griOrg.institution}</div>
-                </div>
-              </div>
-
-              {/* Org 2: CUSAT */}
-              <div className="bg-brand-forestDark/85 border border-brand-sage/30 rounded-xl p-4 flex items-center gap-4 hover:border-brand-sage transition-all">
-                <div className="w-14 h-14 shrink-0 rounded-lg bg-white/10 border border-brand-sage/20 flex items-center justify-center p-1.5 overflow-hidden">
-                  <Image
-                    src={`/${cusatOrg.logo}`}
-                    alt="CUSAT Logo"
-                    width={56}
-                    height={56}
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-                <div>
-                  <span className="text-[10px] font-mono tracking-wider text-brand-accent uppercase block">
-                    {cusatOrg.type} ({cusatOrg.dates.display})
-                  </span>
-                  <div className="font-semibold text-white text-sm line-clamp-1">{cusatOrg.department}</div>
-                  <div className="text-xs text-brand-sage/90">{cusatOrg.institution}</div>
-                </div>
-              </div>
-            </div>
+            {/* Date below Main Heading as h2 */}
+            <h2 className="text-lg sm:text-2xl font-mono text-brand-accent tracking-wider mb-10 sm:mb-12 text-center font-medium">
+              {eventData.dates.display}
+            </h2>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
               <a
                 href="#topics"
-                className="bg-brand-accent text-brand-forestDark hover:bg-[#f0b58e] active:scale-95 font-semibold text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
+                className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
               >
                 <span>Explore {topicsData.topics.length} Conference Tracks</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,7 +213,7 @@ export default function Home() {
               </a>
               <a
                 href="#about"
-                className="bg-transparent hover:bg-brand-forestLight/60 text-brand-cream border border-brand-sage/40 hover:border-brand-sage px-6 py-3.5 rounded-lg text-sm font-medium transition-all"
+                className="bg-transparent hover:bg-[#3ddc84]/10 text-white border border-[#3ddc84]/40 hover:border-[#3ddc84] px-6 py-3.5 rounded-lg text-sm font-medium transition-all"
               >
                 Read Event Scope & Rationale
               </a>
@@ -296,61 +225,100 @@ export default function Home() {
       {/* ========================================== */}
       {/* 2. ABOUT IWCMPQC                           */}
       {/* ========================================== */}
-      <section className="py-20 bg-brand-cream border-b border-brand-border" id="about">
+      <section className="py-20 bg-black border-b border-[#3ddc84]/15 scroll-mt-24" id="about">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-8 h-[2px] bg-brand-accent" />
-            <span className="text-xs uppercase font-mono tracking-widest text-brand-forest font-semibold">
-              Event Overview
-            </span>
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+              {iwcmpqcAbout?.title || "About IWCMPQC 2027"}
+            </h2>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-forest mb-8 leading-tight">
-            {iwcmpqcAbout?.title || "About IWCMPQC 2027"}
-          </h2>
-
-          <div className="prose prose-lg text-brand-ink/90 leading-relaxed space-y-6 text-base sm:text-lg" id="about-intro-paragraphs">
+          <div className="text-[#d4e5dc] leading-relaxed space-y-6 text-base sm:text-lg" id="about-intro-paragraphs">
             {iwcmpqcAbout?.paragraphs.map((p, idx) => (
-              <p key={idx} className="leading-relaxed text-brand-ink/85">
+              <p key={idx} className="leading-relaxed text-[#d4e5dc]/90">
                 {p}
               </p>
             ))}
           </div>
 
+          {/* Joint Institutional Collaboration (GRI × CUSAT) moved from Hero into About section */}
+          <div className="mt-10 mb-10 p-6 sm:p-8 rounded-2xl bg-[#0a0f0d] border border-[#3ddc84]/25 shadow-xl" id="about-joint-institutions">
+            <div className="text-center mb-6">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#3ddc84] font-semibold">
+                Joint Organizing Institutions & Academic Partners
+              </span>
+            </div>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 lg:gap-12 w-full">
+              {/* Org 1: GRI */}
+              <div className="flex-1 text-center md:text-right">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug mb-1">
+                  {griOrg.institution}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#a2c4b5] font-sans leading-relaxed">
+                  {griOrg.department}
+                </p>
+                <span className="inline-block mt-2 text-[11px] font-mono text-[#3ddc84] bg-[#050806] px-2.5 py-1 rounded border border-[#3ddc84]/30">
+                  Host: Workshop ({griOrg.dates.display})
+                </span>
+              </div>
+
+              {/* Big '×' in between */}
+              <div
+                className="shrink-0 flex items-center justify-center text-brand-accent font-serif font-light text-3xl sm:text-4xl lg:text-5xl select-none leading-none opacity-80 py-1"
+                aria-label="collaborates with"
+              >
+                ×
+              </div>
+
+              {/* Org 2: CUSAT */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug mb-1">
+                  {cusatOrg.institution}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#a2c4b5] font-sans leading-relaxed">
+                  {cusatOrg.department}
+                </p>
+                <span className="inline-block mt-2 text-[11px] font-mono text-[#3ddc84] bg-[#050806] px-2.5 py-1 rounded border border-[#3ddc84]/30">
+                  Host: Conference ({cusatOrg.dates.display})
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Quick Highlights Bar */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-brand-border/70">
-            <div className="bg-white/80 p-5 rounded-lg border border-brand-border shadow-xs">
-              <div className="text-xs font-mono uppercase text-brand-inkMuted mb-1">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-10 border-t border-[#3ddc84]/20">
+            <div className="bg-[#0a0f0d] backdrop-blur-sm p-6 rounded-xl border border-[#3ddc84]/20 shadow-md hover:border-[#3ddc84]/40 transition-all">
+              <div className="text-xs font-mono uppercase text-[#3ddc84] mb-1 font-semibold">
                 Part 1: International Workshop
               </div>
-              <div className="font-serif text-xl font-bold text-brand-forest">
+              <div className="font-serif text-xl font-bold text-white">
                 {griOrg.dates.display}
               </div>
-              <div className="text-sm text-brand-inkMuted mt-1">
+              <div className="text-sm text-[#a2c4b5] mt-1.5 leading-relaxed">
                 Foundational Mathematical Frameworks & Hands-on Quantum Labs ({griOrg.location})
               </div>
             </div>
 
-            <div className="bg-white/80 p-5 rounded-lg border border-brand-border shadow-xs">
-              <div className="text-xs font-mono uppercase text-brand-inkMuted mb-1">
+            <div className="bg-[#0a0f0d] backdrop-blur-sm p-6 rounded-xl border border-[#3ddc84]/20 shadow-md hover:border-[#3ddc84]/40 transition-all">
+              <div className="text-xs font-mono uppercase text-[#3ddc84] mb-1 font-semibold">
                 Part 2: International Conference
               </div>
-              <div className="font-serif text-xl font-bold text-brand-forest">
+              <div className="font-serif text-xl font-bold text-white">
                 {cusatOrg.dates.display}
               </div>
-              <div className="text-sm text-brand-inkMuted mt-1">
+              <div className="text-sm text-[#a2c4b5] mt-1.5 leading-relaxed">
                 Peer-Reviewed Papers, Keynotes & Cryptanalytic Defenses ({cusatOrg.location})
               </div>
             </div>
 
-            <div className="bg-white/80 p-5 rounded-lg border border-brand-border shadow-xs">
-              <div className="text-xs font-mono uppercase text-brand-inkMuted mb-1">
+            <div className="bg-[#0a0f0d] backdrop-blur-sm p-6 rounded-xl border border-[#3ddc84]/20 shadow-md hover:border-[#3ddc84]/40 transition-all">
+              <div className="text-xs font-mono uppercase text-[#3ddc84] mb-1 font-semibold">
                 Target Community
               </div>
-              <div className="font-serif text-xl font-bold text-brand-forest">
+              <div className="font-serif text-xl font-bold text-white">
                 Global PQC Assembly
               </div>
-              <div className="text-sm text-brand-inkMuted mt-1">
+              <div className="text-sm text-[#a2c4b5] mt-1.5 leading-relaxed">
                 Cryptographers, Mathematicians, Cybersecurity Engineers & R&D Leaders
               </div>
             </div>
@@ -359,115 +327,103 @@ export default function Home() {
       </section>
 
       {/* ========================================== */}
-      {/* 3. ORGANIZERS (TABS & CARDS)               */}
+      {/* 3. ORGANIZING INSTITUTIONS (SCROLL PINNED) */}
       {/* ========================================== */}
-      <section className="py-20 bg-brand-creamMuted/60 border-b border-brand-border" id="organizers">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="w-8 h-[2px] bg-brand-accent" />
-              <span className="text-xs uppercase font-mono tracking-widest text-brand-forest font-semibold">
-                Institutional Partnership
-              </span>
-              <span className="w-8 h-[2px] bg-brand-accent" />
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-forest mb-4">
-              Organizing Institutions & Centres
-            </h2>
-            <p className="text-brand-inkMuted text-base sm:text-lg">
-              IWCMPQC 2027 unites pioneering institutions in mathematical sciences and quantum computation from Tamil Nadu and Kerala.
-            </p>
-          </div>
-
-          {/* Partner Logos Row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {/* GRI Card */}
-            <div className="bg-white p-6 rounded-xl border border-brand-border shadow-sm flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-28 h-28 shrink-0 bg-brand-cream rounded-lg border border-brand-border flex flex-col items-center justify-center p-2 text-center overflow-hidden">
-                <Image
-                  src={`/${griOrg.logo}`}
-                  alt="GRI Logo"
-                  width={96}
-                  height={96}
-                  className="max-h-20 max-w-full object-contain"
-                />
-              </div>
+      <section
+        ref={organizersSectionRef}
+        className="relative bg-black border-b border-[#3ddc84]/15 min-h-[300vh] scroll-mt-24"
+        id="organizers"
+      >
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden bg-black z-20 px-4 sm:px-8 lg:px-16 pt-24 pb-8">
+          {/* Header Row with Title & Scroll Progress Indicator */}
+          <div className="max-w-7xl mx-auto w-full mb-6 shrink-0">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#3ddc84]/20">
               <div>
-                <h3 className="font-serif text-xl font-bold text-brand-forest">
-                  {griOrg.institution}
-                </h3>
-                <p className="text-xs text-brand-inkMuted mb-2">
-                  (Deemed to be University) · MoE, Govt. of India · {griOrg.location}
-                </p>
-                <p className="text-sm text-brand-ink/80">
-                  Hosting the International Workshop on PQC Foundations ({griOrg.dates.display}) via CMMQC.
-                </p>
-              </div>
-            </div>
 
-            {/* CUSAT Card */}
-            <div className="bg-white p-6 rounded-xl border border-brand-border shadow-sm flex flex-col sm:flex-row items-center gap-6">
-              <div className="w-28 h-28 shrink-0 bg-brand-cream rounded-lg border border-brand-border flex flex-col items-center justify-center p-2 text-center overflow-hidden">
-                <Image
-                  src={`/${cusatOrg.logo}`}
-                  alt="CUSAT Logo"
-                  width={96}
-                  height={96}
-                  className="max-h-20 max-w-full object-contain"
-                />
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
+                  Organizing Institutions & Centres
+                </h2>
               </div>
-              <div>
-                <h3 className="font-serif text-xl font-bold text-brand-forest">
-                  {cusatOrg.institution}
-                </h3>
-                <p className="text-xs text-brand-inkMuted mb-2">
-                  {cusatOrg.department} · NAAC A+ Accredited · {cusatOrg.location}
-                </p>
-                <p className="text-sm text-brand-ink/80">
-                  Hosting the International Conference on PQC Applications ({cusatOrg.dates.display}).
-                </p>
-              </div>
-            </div>
-          </div>
 
-          {/* Interactive Tabbed View for Detailed About Sections */}
-          <div className="bg-white rounded-2xl border border-brand-border shadow-sm overflow-hidden">
-            {/* Tab Buttons Container */}
-            <div className="flex flex-wrap border-b border-brand-border bg-brand-cream/60 p-2 gap-2" id="organizer-tab-buttons" role="tablist">
-              {organizerSections.map((section, idx) => (
+              {/* Navigation Controls */}
+              <div className="flex items-center gap-2">
                 <button
-                  key={section.id}
-                  onClick={() => setActiveOrganizerTab(idx)}
-                  className={`px-4 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                    idx === activeOrganizerTab
-                      ? "bg-brand-forest text-white shadow-sm font-semibold"
-                      : "text-brand-ink/70 hover:text-brand-forest hover:bg-white/80"
-                  }`}
-                  role="tab"
-                  aria-selected={idx === activeOrganizerTab}
+                  type="button"
+                  onClick={() => scrollStep("left")}
+                  aria-label="Previous card"
+                  className="w-9 h-9 rounded-lg bg-[#0a0f0d] border border-[#3ddc84]/30 text-[#3ddc84] hover:bg-[#3ddc84] hover:text-black transition-all flex items-center justify-center cursor-pointer active:scale-95 shadow-sm"
                 >
-                  {section.title}
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                  </svg>
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => scrollStep("right")}
+                  aria-label="Next card"
+                  className="w-9 h-9 rounded-lg bg-[#0a0f0d] border border-[#3ddc84]/30 text-[#3ddc84] hover:bg-[#3ddc84] hover:text-black transition-all flex items-center justify-center cursor-pointer active:scale-95 shadow-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
+          </div>
 
-            {/* Tab Content Display Panel */}
-            <div className="p-6 sm:p-10 min-h-[300px]" id="organizer-tab-content">
-              {activeSection && (
-                <div className="max-w-4xl transition-opacity duration-300">
-                  <div className="inline-block bg-brand-sageLight text-brand-forest border border-brand-sage/40 text-xs font-mono font-semibold px-3 py-1 rounded-full mb-4">
-                    {organizerBadges[activeSection.id] || "Academic Partner"}
+          {/* Horizontal Track of 4 Cards */}
+          <div className="w-full overflow-hidden">
+            <div
+              ref={cardsTrackRef}
+              className="flex gap-6 will-change-transform py-3 items-stretch"
+              style={{
+                transform: `translateX(-${translateX}px)`,
+                transition: "transform 0.08s ease-out",
+              }}
+            >
+              {organizerSections.map((section) => {
+                const logoSrc =
+                  section.id === "gri" || section.id === "cmmqc"
+                    ? `/${griOrg.logo}`
+                    : `/${cusatOrg.logo}`;
+
+                return (
+                  <div
+                    key={section.id}
+                    className="w-[320px] sm:w-[480px] lg:w-[540px] shrink-0 bg-[#0a0f0d] rounded-2xl border border-[#3ddc84]/25 p-6 sm:p-8 shadow-2xl flex flex-col justify-start group relative overflow-hidden"
+                  >
+                    {/* Corner ambient glow */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#3ddc84]/10 rounded-bl-full pointer-events-none group-hover:bg-[#3ddc84]/20 transition-all" />
+
+                    <div className="relative z-10">
+                      {/* Logo and Title */}
+                      <div className="flex items-start gap-4 mb-5">
+                        <div className="w-14 h-14 shrink-0 bg-white/95 rounded-lg border border-white/20 p-1.5 flex items-center justify-center overflow-hidden shadow-inner">
+                          <Image
+                            src={logoSrc}
+                            alt={`${section.title} Logo`}
+                            width={56}
+                            height={56}
+                            className="max-h-11 max-w-full object-contain"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="font-serif text-xl sm:text-2xl font-bold text-white group-hover:text-[#3ddc84] transition-colors leading-snug">
+                            {section.title}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {/* Paragraphs directly from about.json */}
+                      <div className="space-y-3.5 text-[#d4e5dc] text-xs sm:text-sm leading-relaxed">
+                        {section.paragraphs.map((p, pIdx) => (
+                          <p key={pIdx}>{p}</p>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-brand-forest mb-6">
-                    {activeSection.title}
-                  </h3>
-                  <div className="space-y-4 text-brand-ink/85 text-base sm:text-lg leading-relaxed">
-                    {activeSection.paragraphs.map((p, idx) => (
-                      <p key={idx}>{p}</p>
-                    ))}
-                  </div>
-                </div>
-              )}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -476,20 +432,13 @@ export default function Home() {
       {/* ========================================== */}
       {/* 4. TOPICS TO BE COVERED                    */}
       {/* ========================================== */}
-      <section className="py-20 bg-brand-cream border-b border-brand-border relative" id="topics">
+      <section className="py-20 bg-[#082216] border-b border-[#3ddc84]/15 relative scroll-mt-24" id="topics">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 mb-3">
-              <span className="w-8 h-[2px] bg-brand-accent" />
-              <span className="text-xs uppercase font-mono tracking-widest text-brand-forest font-semibold">
-                Scope & Call for Research
-              </span>
-              <span className="w-8 h-[2px] bg-brand-accent" />
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-forest mb-4">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               {topicsData.title}
             </h2>
-            <p className="text-brand-inkMuted text-base sm:text-lg">
+            <p className="text-[#a2c4b5] text-base sm:text-lg">
               The {topicsData.topics.length} core focus tracks spanning theoretical mathematical formulations, NIST standards, cryptanalysis, and hardware implementations in post-quantum ecosystems.
             </p>
           </div>
@@ -505,30 +454,30 @@ export default function Home() {
                 radius={16}
                 enableTilt={true}
                 theme="dark"
-                backdropColor="#1F3A34"
+                backdropColor="#0c3020"
                 className="w-full"
               />
             ))}
           </div>
 
-          {/* Call for Papers Banner Box (Chalkboard style matching reference palette) */}
-          <div className="mt-14 rounded-2xl bg-brand-forest text-brand-cream p-8 sm:p-10 relative overflow-hidden border border-brand-forestLight shadow-lg">
-            <div className="absolute -right-10 -bottom-10 opacity-20 font-serif text-8xl italic text-brand-sage pointer-events-none select-none" aria-hidden="true">
+          {/* Call for Papers Banner Box */}
+          <div className="mt-14 rounded-2xl bg-gradient-to-br from-[#0c3321] to-[#071f14] text-white p-8 sm:p-10 relative overflow-hidden border border-[#3ddc84]/30 shadow-xl">
+            <div className="absolute -right-10 -bottom-10 opacity-15 font-serif text-8xl italic text-[#3ddc84] pointer-events-none select-none" aria-hidden="true">
               LWE
             </div>
             <div className="relative z-10 max-w-2xl">
-              <span className="text-xs font-mono uppercase tracking-widest text-brand-accent font-semibold block mb-2">
+              <span className="text-xs font-mono uppercase tracking-widest text-[#3ddc84] font-semibold block mb-2">
                 CALL FOR PAPERS & RESEARCH POSTERS
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-3">
                 Proofs and Patterns in Quantum-Safe Cryptography
               </h3>
-              <p className="text-brand-cream/80 text-sm sm:text-base leading-relaxed mb-6">
+              <p className="text-[#d4e5dc] text-sm sm:text-base leading-relaxed mb-6">
                 Original research manuscripts, review papers, and technical implementation blueprints in any of the {topicsData.topics.length} conference tracks are invited for peer-reviewed presentation and proceedings.
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <a
-                  className="bg-brand-accent text-brand-forestDark hover:bg-[#f0b58e] active:scale-95 font-semibold text-sm px-6 py-3 rounded-lg transition-all shadow-md inline-flex items-center gap-2"
+                  className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3 rounded-lg transition-all shadow-md inline-flex items-center gap-2"
                   href="#contact"
                 >
                   <span>Submit Abstract / Contact Conveners</span>
@@ -536,7 +485,7 @@ export default function Home() {
                     <path d="M14 5l7 7m0 0l-7 7m7-7H3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                   </svg>
                 </a>
-                <span className="text-xs text-brand-sage font-mono">
+                <span className="text-xs text-[#3ddc84] font-mono">
                   Proceedings indexed with leading academic publishers
                 </span>
               </div>
@@ -548,20 +497,16 @@ export default function Home() {
       {/* ========================================== */}
       {/* 5. CONTACT & CONVENERS                     */}
       {/* ========================================== */}
-      <section className="py-20 bg-brand-creamMuted/40" id="contact">
+      <section className="py-20 bg-[#0a2a1a] border-b border-[#3ddc84]/15 scroll-mt-24" id="contact">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <div className="inline-flex items-center gap-2 mb-3">
-              <span className="w-8 h-[2px] bg-brand-accent" />
-              <span className="text-xs uppercase font-mono tracking-widest text-brand-forest font-semibold">
-                Secretariat
-              </span>
-              <span className="w-8 h-[2px] bg-brand-accent" />
+
             </div>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-forest mb-4">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               {contactData.title || "Contact & Conveners"}
             </h2>
-            <p className="text-brand-inkMuted text-base sm:text-lg">
+            <p className="text-[#a2c4b5] text-base sm:text-lg">
               For workshop registrations, paper submissions, accommodation inquiries, and sponsorship partnerships, reach out directly to the event conveners.
             </p>
           </div>
@@ -571,36 +516,36 @@ export default function Home() {
             {contactData.contacts.map((c) => (
               <div
                 key={c.name}
-                className="bg-white rounded-2xl border border-brand-border p-8 shadow-sm hover:border-brand-sage transition-all relative overflow-hidden"
+                className="bg-[#0d3121]/80 backdrop-blur-sm rounded-2xl border border-[#3ddc84]/20 p-8 shadow-md hover:border-[#3ddc84]/40 transition-all relative overflow-hidden"
               >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-brand-sageLight/40 rounded-bl-full pointer-events-none -z-0" />
+                <div className="absolute top-0 right-0 w-24 h-24 bg-[#3ddc84]/10 rounded-bl-full pointer-events-none -z-0" />
 
                 <div className="relative z-10">
-                  <span className="inline-block bg-brand-forest text-brand-accent text-xs font-mono uppercase tracking-wider font-semibold px-3 py-1 rounded-md mb-4">
+                  <span className="inline-block bg-[#071a11] text-[#3ddc84] border border-[#3ddc84]/30 text-xs font-mono uppercase tracking-wider font-semibold px-3 py-1 rounded-md mb-4">
                     {c.role}
                   </span>
-                  <h3 className="font-serif text-2xl font-bold text-brand-forest mb-1">
+                  <h3 className="font-serif text-2xl font-bold text-white mb-1">
                     {c.name}
                   </h3>
-                  <p className="text-sm font-semibold text-brand-ink mb-1">{c.designation}</p>
-                  <p className="text-xs text-brand-inkMuted leading-relaxed mb-6">
+                  <p className="text-sm font-semibold text-[#3ddc84] mb-1">{c.designation}</p>
+                  <p className="text-xs text-[#a2c4b5] leading-relaxed mb-6">
                     {c.department}
                     <br />
-                    <span className="font-medium text-brand-forest">{c.institution}</span>
+                    <span className="font-medium text-white">{c.institution}</span>
                   </p>
 
-                  <div className="text-xs text-brand-forestLight bg-brand-cream/80 p-3 rounded-lg border border-brand-border/60 mb-6">
-                    <span className="font-semibold block mb-0.5 text-brand-forest">Inquiry Focus:</span>
+                  <div className="text-xs text-[#d4e5dc] bg-[#071a11]/90 p-3 rounded-lg border border-[#3ddc84]/20 mb-6">
+                    <span className="font-semibold block mb-0.5 text-[#3ddc84]">Inquiry Focus:</span>
                     Conference Paper Submissions, Review Process, Registrations & Venue Inquiries
                   </div>
 
                   {/* Clickable tel and mailto links */}
-                  <div className="space-y-3 pt-4 border-t border-brand-border text-sm">
+                  <div className="space-y-3 pt-4 border-t border-[#3ddc84]/20 text-sm">
                     <a
                       href={`tel:${c.phone.replace(/[^0-9+]/g, "")}`}
-                      className="flex items-center gap-3 text-brand-forest hover:text-brand-accent font-mono transition-colors group"
+                      className="flex items-center gap-3 text-[#3ddc84] hover:text-white font-mono transition-colors group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-forest group-hover:border-brand-accent transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-[#071a11] border border-[#3ddc84]/30 flex items-center justify-center text-[#3ddc84] group-hover:border-[#3ddc84] transition-colors">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
@@ -615,9 +560,9 @@ export default function Home() {
 
                     <a
                       href={`mailto:${c.email}`}
-                      className="flex items-center gap-3 text-brand-forest hover:text-brand-accent font-mono transition-colors group"
+                      className="flex items-center gap-3 text-[#3ddc84] hover:text-white font-mono transition-colors group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-forest group-hover:border-brand-accent transition-colors">
+                      <div className="w-8 h-8 rounded-lg bg-[#071a11] border border-[#3ddc84]/30 flex items-center justify-center text-[#3ddc84] group-hover:border-[#3ddc84] transition-colors">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path
                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
@@ -636,8 +581,8 @@ export default function Home() {
           </div>
 
           {/* Quick Inquiry / Advisory Note */}
-          <div className="mt-12 p-6 rounded-xl bg-white border border-brand-border text-center text-sm text-brand-inkMuted max-w-2xl mx-auto shadow-2xs">
-            <span className="font-semibold text-brand-forest">Note for International Delegates:</span> Official invitation letters for visa processing and travel clearance are issued by the respective host institutions upon registration confirmation.
+          <div className="mt-12 p-6 rounded-xl bg-[#0d3121]/60 border border-[#3ddc84]/20 text-center text-sm text-[#a2c4b5] max-w-2xl mx-auto shadow-sm">
+            <span className="font-semibold text-[#3ddc84]">Note for International Delegates:</span> Official invitation letters for visa processing and travel clearance are issued by the respective host institutions upon registration confirmation.
           </div>
         </div>
       </section>
@@ -645,31 +590,31 @@ export default function Home() {
       {/* ========================================== */}
       {/* 6. FOOTER                                  */}
       {/* ========================================== */}
-      <footer className="bg-brand-forestDark text-brand-cream border-t border-brand-forestLight/50 py-14 mt-auto">
+      <footer className="bg-[#06170f] text-brand-cream border-t border-[#3ddc84]/20 py-14 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-brand-forest/60">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-[#3ddc84]/15">
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded bg-brand-forest border border-brand-sage/40 flex items-center justify-center text-brand-accent font-serif font-bold text-lg">
+                <div className="w-9 h-9 rounded bg-[#0a2a1a] border border-[#3ddc84]/40 flex items-center justify-center text-brand-accent font-serif font-bold text-lg">
                   Ψ
                 </div>
-                <span className="font-serif font-bold text-xl text-brand-cream">
+                <span className="font-serif font-bold text-xl text-white">
                   {eventData.shortName}
                 </span>
               </div>
               <p className="text-xs text-brand-accent font-mono tracking-wide" id="footer-dates-banner">
                 {eventData.dates.display}
               </p>
-              <p className="text-sm text-brand-cream/70 max-w-md leading-relaxed">
+              <p className="text-sm text-[#d4e5dc]/80 max-w-md leading-relaxed">
                 {eventData.title}
               </p>
             </div>
 
             <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider text-brand-sage font-semibold mb-4">
+              <h4 className="text-xs uppercase font-mono tracking-wider text-[#3ddc84] font-semibold mb-4">
                 Quick Navigation
               </h4>
-              <ul className="space-y-2 text-sm text-brand-cream/80">
+              <ul className="space-y-2 text-sm text-[#d4e5dc]/80">
                 <li>
                   <a className="hover:text-brand-accent transition-colors" href="#hero">
                     Home & Event Overview
@@ -699,14 +644,14 @@ export default function Home() {
             </div>
 
             <div>
-              <h4 className="text-xs uppercase font-mono tracking-wider text-brand-sage font-semibold mb-4">
+              <h4 className="text-xs uppercase font-mono tracking-wider text-[#3ddc84] font-semibold mb-4">
                 Organized By
               </h4>
-              <div className="space-y-3 text-xs text-brand-cream/80" id="footer-organizers-list">
+              <div className="space-y-3 text-xs text-[#d4e5dc]/80" id="footer-organizers-list">
                 {eventData.organizers.map((org) => (
-                  <div key={org.id} className="border-l-2 border-brand-sage/40 pl-3">
-                    <div className="font-medium text-brand-cream">{org.institution}</div>
-                    <div className="text-[11px] text-brand-cream/60">
+                  <div key={org.id} className="border-l-2 border-[#3ddc84]/40 pl-3">
+                    <div className="font-medium text-white">{org.institution}</div>
+                    <div className="text-[11px] text-[#a2c4b5]">
                       {org.department} ({org.type}) · {org.location}
                     </div>
                   </div>
@@ -715,7 +660,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-cream/60 font-mono">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#a2c4b5] font-mono">
             <p>© 2027 IWCMPQC Joint Academic Secretariat. All rights reserved.</p>
             <p>
               Gandhigram Rural Institute (GRI) & Cochin University of Science and Technology (CUSAT)
@@ -723,6 +668,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-    </div>
+    </div >
   );
 }

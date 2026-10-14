@@ -478,6 +478,8 @@ const Threads: React.FC<ThreadsProps> = ({
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      const s = settingsRef.current;
+      if (!s.enableMouseInteraction && s.parting <= 0) return;
       const rect = container.getBoundingClientRect();
       const x = (event.clientX - rect.left) / Math.max(1, rect.width);
       const y = (event.clientY - rect.top) / Math.max(1, rect.height);
@@ -497,6 +499,8 @@ const Threads: React.FC<ThreadsProps> = ({
     };
 
     const onPointerLeave = () => {
+      const s = settingsRef.current;
+      if (!s.enableMouseInteraction && s.parting <= 0) return;
       state.inside = false;
       state.targetMouse = [0.5, 0.5];
       wake();

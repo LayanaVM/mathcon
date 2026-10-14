@@ -2,10 +2,9 @@
     "sections": [
         {
             "id": "iwcmpqc",
-            "title": "About IWCMPQC",
+            "title": "About IWCMPQC 2027",
             "paragraphs": [
-                "The International Workshop and Conference on Mathematical Models for Post-Quantum Cryptography and its Applications (IWCMPQC 2027) brings together cryptographers, mathematicians, cybersecurity engineers, computer scientists, and industrial R&D leaders.",
-                "As the digital landscape prepares for the quantum era, the primary objective of IWCMPQC 2027 is to explore how advanced mathematical domains, including Linear Algebra, Abstract Algebra, Fuzzy Logic, Functional Analysis, Probability Theory, and Numerical Methods, play a role in solving complex security challenges that the post-quantum era faces. The conference emphasizes next-generation cryptographic primitives and their practical deployment across Industrial Control Systems (ICS/SCADA), IoT, Smart Grids, Cloud/Edge networks, and automated manufacturing."
+                "The International Workshop and Conference on Mathematical Models for Post-Quantum Cryptography and its Applications (IWCMPQC 2027) brings together global cryptographers, mathematicians, cybersecurity engineers, and industrial leaders to explore how foundational mathematical frameworks—including Linear Algebra, Abstract Algebra, Fuzzy Logic, Functional Analysis, Probability Theory, and Numerical Methods—solve complex security challenges in the post-quantum era, emphasizing next-generation cryptographic primitives, cryptanalysis, and practical deployments across Industrial Control Systems (ICS/SCADA), IoT, Smart Grids, Cloud/Edge networks, and automated manufacturing."
             ]
         },
         {
