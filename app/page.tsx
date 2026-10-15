@@ -74,7 +74,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 1. HERO SECTION                            */}
       {/* ========================================== */}
-      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-20 sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[500px] sm:min-h-[96vh] flex items-center justify-center" id="hero">
+      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-20 sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[100dvh] sm:min-h-[96vh] flex items-center justify-center" id="hero">
         {/* Lattice Orb 3D WebGL Visualization */}
         <LatticeOrb />
 
@@ -113,10 +113,10 @@ export default function Home() {
               {eventData.dates.display}
             </h2>
 
-            {/* Venue - Unboxed typography, readable body text 14-16px, without 'Venue:' word */}
+            {/* Venue - Updated to Seminar Complex, CUSAT */}
             <div className="text-sm sm:text-base text-[#d4e5dc] tracking-normal mb-6 sm:mb-10 font-sans text-left sm:text-center">
               <span className="text-white font-medium leading-snug">
-                Cochin University of Science and Technology (CUSAT), Kochi, Kerala
+                Seminar Complex, CUSAT
               </span>
             </div>
 
@@ -127,7 +127,9 @@ export default function Home() {
                 className="w-auto min-w-[150px] max-w-[190px] sm:min-w-[180px] h-[38px] sm:h-[42px] px-5 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-xs sm:text-sm rounded-lg transition-all shadow-md flex items-center justify-center gap-2"
               >
                 <span>Register Now</span>
-
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
               </Link>
               <a
                 href="#topics"

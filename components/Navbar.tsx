@@ -24,8 +24,8 @@ export default function Navbar() {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-black/90 backdrop-blur-md border-b border-[#3ddc84]/15 shadow-xl"
-          : "bg-transparent"
+          ? "bg-black/95 backdrop-blur-md border-b border-[#3ddc84]/20 shadow-xl"
+          : "bg-black sm:bg-transparent border-b border-[#3ddc84]/15 sm:border-b-0 backdrop-blur-md sm:backdrop-blur-none"
       }`}
     >
       <div className="w-full px-5 sm:px-10 lg:px-16 xl:px-20 h-16 sm:h-20 lg:h-24 flex items-center justify-between">
