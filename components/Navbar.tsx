@@ -28,12 +28,12 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="w-full px-6 sm:px-10 lg:px-16 xl:px-20 h-20 sm:h-24 flex items-center justify-between">
+      <div className="w-full px-5 sm:px-10 lg:px-16 xl:px-20 h-16 sm:h-20 lg:h-24 flex items-center justify-between">
         <Link
           className="flex items-center group focus:outline-none focus:ring-2 focus:ring-brand-accent rounded-lg p-1"
           href={isRegisterPage ? "/" : "/#hero"}
         >
-          <span className="font-serif font-bold tracking-wide text-brand-cream text-xl sm:text-2xl block leading-none">
+          <span className="font-serif font-bold tracking-wide text-brand-cream text-lg sm:text-2xl block leading-none">
             {eventData.shortName}
           </span>
         </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
           id="mobileMenuBtn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {mobileMenuOpen ? (
               <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             ) : (
@@ -100,35 +100,48 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-brand-forestDark/95 backdrop-blur-md border-b border-brand-sage/20 px-6 pt-3 pb-6 space-y-2 shadow-2xl" id="mobileMenu">
           <Link
-            className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
+            className="block text-brand-cream/90 hover:text-brand-accent text-base font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
             href={isRegisterPage ? "/" : "/#hero"}
             onClick={() => setMobileMenuOpen(false)}
           >
             Home
           </Link>
           <Link
-            className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
+            className="block text-brand-cream/90 hover:text-brand-accent text-base font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
             href={isRegisterPage ? "/#about" : "#about"}
             onClick={() => setMobileMenuOpen(false)}
           >
             About
           </Link>
           <Link
-            className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
+            className="block text-brand-cream/90 hover:text-brand-accent text-base font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
             href={isRegisterPage ? "/#topics" : "#topics"}
             onClick={() => setMobileMenuOpen(false)}
           >
             Topics to Cover
           </Link>
           <Link
-            className="block text-brand-cream/90 hover:text-brand-accent text-lg font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
+            className="block text-brand-cream/90 hover:text-brand-accent text-base font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
             href={isRegisterPage ? "/#contact" : "#contact"}
             onClick={() => setMobileMenuOpen(false)}
           >
             Contact & Conveners
           </Link>
+          <a
+            className="flex items-center justify-between text-brand-cream/90 hover:text-brand-accent text-base font-medium py-2 px-3 rounded hover:bg-brand-forest/60 transition-colors"
+            href="/assets/topics/mathcon.pdf"
+            download="mathcon.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <span>Download Brochure</span>
+            <svg className="w-4 h-4 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </a>
           <Link
-            className="block bg-brand-accent text-black font-bold text-center text-base uppercase tracking-wider py-2.5 px-3 rounded mt-2"
+            className="block bg-brand-accent text-black font-bold text-center text-sm uppercase tracking-wider py-2.5 px-3 rounded mt-2"
             href="/register"
             onClick={() => setMobileMenuOpen(false)}
           >

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
+import BackgroundLattice from "@/components/BackgroundLattice";
 import "./globals.css";
 
 const ebGaramond = EB_Garamond({
@@ -47,8 +48,11 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
       </head>
-      <body className="min-h-full flex flex-col bg-black text-[#d4e5dc] font-sans antialiased selection:bg-[#3ddc84]/30 selection:text-white">
-        {children}
+      <body className="min-h-full flex flex-col bg-black text-[#d4e5dc] font-sans antialiased selection:bg-[#3ddc84]/30 selection:text-white relative">
+        <BackgroundLattice />
+        <div className="relative z-10 flex flex-col min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );

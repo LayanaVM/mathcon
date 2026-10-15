@@ -29,11 +29,6 @@
   <!-- Formula watermark -->
   <text x="370" y="45" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" fill="#8FBFA8" opacity="0.4" text-anchor="end">&lt;f, g&gt; = int f(t) g*(t) dt</text>
 
-  <!-- Track badge in top left corner of artwork -->
-  <g transform="translate(26, 26)">
-    <rect width="48" height="24" rx="4" fill="#142723" stroke="#3ddc84" stroke-width="1.2" opacity="0.9"/>
-    <text x="24" y="16.5" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#3ddc84" text-anchor="middle">T05</text>
-  </g>
 
   <!-- Track graphic visualization -->
   <g>

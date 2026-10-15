@@ -79,7 +79,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-[#d4e5dc] selection:bg-[#3ddc84]/30 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-transparent text-[#d4e5dc] selection:bg-[#3ddc84]/30 selection:text-white">
       {/* ========================================== */}
       {/* 0. TOP NAVIGATION                          */}
       {/* ========================================== */}
@@ -102,7 +102,7 @@ export default function RegisterPage() {
       {/* ========================================== */}
       {/* 2. REGISTRATION WORKFLOW & FORM            */}
       {/* ========================================== */}
-      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 bg-black">
+      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 bg-black/60 backdrop-blur-[2px]">
         <div className="max-w-4xl mx-auto space-y-8">
 
           {/* Submission Success Screen */}

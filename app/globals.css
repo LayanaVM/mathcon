@@ -21,7 +21,7 @@
 
 /* Lattice / Cryptography Quantum Canvas background grid */
 .lattice-pattern {
-  background-color: #000000;
+  background-color: transparent;
   background-image: 
     radial-gradient(circle at 20px 20px, rgba(61, 220, 132, 0.08) 2px, transparent 0),
     linear-gradient(to right, rgba(61, 220, 132, 0.02) 1px, transparent 1px),

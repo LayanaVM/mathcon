@@ -64,7 +64,7 @@ export default function Home() {
   const cusatOrg = eventData.organizers.find((o) => o.id === "cusat") || eventData.organizers[1];
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-[#d4e5dc] selection:bg-[#3ddc84]/30 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-transparent text-[#d4e5dc] selection:bg-[#3ddc84]/30 selection:text-white">
       {/* ========================================== */}
       {/* ========================================== */}
       {/* 0. TOP NAVIGATION (ATTACHED TO TOP, TRANSPARENT) */}
@@ -74,81 +74,76 @@ export default function Home() {
       {/* ========================================== */}
       {/* 1. HERO SECTION                            */}
       {/* ========================================== */}
-      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-28 sm:pt-32 lg:pt-36 pb-36 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[96vh] flex items-center justify-center" id="hero">
+      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-20 sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[500px] sm:min-h-[96vh] flex items-center justify-center" id="hero">
         {/* Lattice Orb 3D WebGL Visualization */}
         <LatticeOrb />
 
-        {/* Deep contrast dark vignette / gradient overlay to keep background dark pure black and typography legible */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none z-[1]" aria-hidden="true" />
+        {/* Deep contrast dark vignette / gradient overlay for desktop */}
+        <div className="hidden sm:block absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none z-[2]" aria-hidden="true" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="hero-container">
-          <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full" id="hero-container">
+          <div className="max-w-5xl mx-auto text-left sm:text-center flex flex-col items-start sm:items-center">
             {/* Jointly Organized above International Workshop and Conference */}
-            <div className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] text-[#a2c4b5] mb-2 sm:mb-2.5 font-medium">
+            <div className="text-xs sm:text-sm font-mono uppercase tracking-normal sm:tracking-[0.2em] text-[#a2c4b5] mb-2 sm:mb-2.5 font-medium text-left sm:text-center">
               Jointly Organized by GRI &amp; CUSAT
             </div>
 
             {/* Small uppercase label above - Bolder */}
-            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-3 sm:mb-4">
+            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-wide sm:tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-3 sm:mb-4 text-left sm:text-center">
               International Workshop and Conference
             </span>
 
-            {/* Main Title - Deliberate two lines */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2 sm:mb-3 leading-[1.18] text-center max-w-4xl">
-              <span className="block">Mathematical Models for</span>
-              <span className="block text-white">Post-Quantum Cryptography</span>
+            {/* Main Title - Mobile: intentional 3 lines left-aligned beside the lattice ball; Desktop: original 2 lines centered */}
+            <h1 className="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2 leading-[1.18] text-left sm:text-center max-w-[72%] sm:max-w-4xl">
+              <span className="sm:hidden block">Mathematical Models</span>
+              <span className="sm:hidden block">for Post-Quantum</span>
+              <span className="sm:hidden block text-white">Cryptography</span>
+
+              <span className="hidden sm:block">Mathematical Models for</span>
+              <span className="hidden sm:block text-white">Post-Quantum Cryptography</span>
             </h1>
 
-            {/* Subtitle - Deliberate third line */}
-            <p className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-center mb-5 sm:mb-6">
+            {/* Subtitle - Deliberate line directly underneath in italic */}
+            <p className="font-serif text-base sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-left sm:text-center mb-4 sm:mb-6">
               and its Applications
             </p>
 
-            {/* Date below Main Heading */}
-            <h2 className="text-base sm:text-xl font-mono text-brand-accent tracking-wider mb-2.5 text-center font-medium">
+            {/* Date below Main Heading - reduced excessive letter spacing */}
+            <h2 className="text-sm sm:text-xl font-mono text-brand-accent tracking-normal sm:tracking-wider mb-3.5 sm:mb-4 text-left sm:text-center font-medium">
               {eventData.dates.display}
             </h2>
 
-            {/* Venue - Unboxed typography, only CUSAT */}
-            <div className="flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base text-[#d4e5dc] mb-8 sm:mb-10 font-sans">
-              <span className="text-[#3ddc84] font-mono text-xs uppercase tracking-wider font-semibold">
-                Venue:
-              </span>
-              <span className="text-white font-medium">
+            {/* Venue - Unboxed typography, readable body text 14-16px, without 'Venue:' word */}
+            <div className="text-sm sm:text-base text-[#d4e5dc] tracking-normal mb-6 sm:mb-10 font-sans text-left sm:text-center">
+              <span className="text-white font-medium leading-snug">
                 Cochin University of Science and Technology (CUSAT), Kochi, Kerala
               </span>
             </div>
 
-            {/* CTAs - All three buttons green */}
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            {/* CTAs - Sleeker, compact button sizing */}
+            <div className="flex flex-wrap items-center justify-start sm:justify-center gap-3.5 sm:gap-4 w-full">
               <Link
                 href="/register"
-                className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
+                className="w-auto min-w-[150px] max-w-[190px] sm:min-w-[180px] h-[38px] sm:h-[42px] px-5 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-xs sm:text-sm rounded-lg transition-all shadow-md flex items-center justify-center gap-2"
               >
                 <span>Register Now</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+
               </Link>
               <a
                 href="#topics"
-                className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
+                className="hidden sm:inline-flex sm:min-w-[180px] h-[42px] px-5 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-xs sm:text-sm rounded-lg transition-all shadow-md items-center justify-center gap-2"
               >
                 <span>Explore Topics</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                </svg>
+
               </a>
               <a
                 href="/assets/topics/mathcon.pdf"
                 download="mathcon.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-sm px-6 py-3.5 rounded-lg transition-all shadow-md flex items-center gap-2"
+                className="hidden sm:inline-flex sm:min-w-[180px] h-[42px] px-5 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-xs sm:text-sm rounded-lg transition-all shadow-md items-center justify-center gap-2"
               >
-                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
+
                 <span>Download Brochure</span>
               </a>
             </div>
@@ -159,7 +154,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 2. ABOUT IWCMPQC                           */}
       {/* ========================================== */}
-      <section className="py-20 bg-black border-b border-[#3ddc84]/15 scroll-mt-24" id="about">
+      <section className="py-20 bg-black/65 backdrop-blur-[2px] border-b border-[#3ddc84]/15 scroll-mt-24" id="about">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
@@ -220,10 +215,10 @@ export default function Home() {
       {/* ========================================== */}
       <section
         ref={organizersSectionRef}
-        className="relative bg-black border-b border-[#3ddc84]/15 min-h-[300vh] scroll-mt-24"
+        className="relative bg-black/50 backdrop-blur-[2px] border-b border-[#3ddc84]/15 min-h-[300vh] scroll-mt-24"
         id="organizers"
       >
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden bg-black z-20 px-4 sm:px-8 lg:px-16 pt-24 pb-8">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden bg-transparent z-20 px-4 sm:px-8 lg:px-16 pt-24 pb-8">
           {/* Header Row with Title & Scroll Progress Indicator */}
           <div className="max-w-7xl mx-auto w-full mb-6 shrink-0">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#3ddc84]/20">
@@ -320,7 +315,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 4. TOPICS TO BE COVERED                    */}
       {/* ========================================== */}
-      <section className="py-20 bg-black border-b border-[#3ddc84]/15 relative scroll-mt-24" id="topics">
+      <section className="py-20 bg-black/65 backdrop-blur-[2px] border-b border-[#3ddc84]/15 relative scroll-mt-24" id="topics">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -337,7 +332,7 @@ export default function Home() {
               <ProfileCard
                 key={t.id}
                 name={t.name}
-                avatarUrl={`/assets/topics/topic-${t.id}.svg?v=2`}
+                avatarUrl={`/assets/topics/topic-${t.id}.svg?v=3`}
                 tiltStrength={10}
                 radius={16}
                 enableTilt={true}
@@ -382,7 +377,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 5. CONTACT & CONVENERS                     */}
       {/* ========================================== */}
-      <section className="py-20 bg-black border-b border-[#3ddc84]/15 scroll-mt-24" id="contact">
+      <section className="py-20 bg-black/70 backdrop-blur-[2px] border-b border-[#3ddc84]/15 scroll-mt-24" id="contact">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">

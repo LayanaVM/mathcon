@@ -105,7 +105,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
         rawRenderer = new THREE.WebGLRenderer({
           canvas,
           antialias: !isMobile,
-          alpha: false,
+          alpha: true,
           powerPreference: 'default',
           stencil: false,
           precision: 'mediump'
@@ -130,7 +130,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       }
 
       renderer.setPixelRatio(dpr);
-      renderer.setClearColor(BG_COLOR_HEX, 1.0);
+      renderer.setClearColor(0x000000, 0);
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
@@ -279,7 +279,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
           const lineGeo = registerDisposable(new THREE.BufferGeometry());
           lineGeo.setAttribute('position', new THREE.BufferAttribute(lineArr, 3));
           const lineMat = registerDisposable(
-            noDepth(new THREE.LineBasicMaterial({ color: EMERALD, opacity: 0.8 }))
+            noDepth(new THREE.LineBasicMaterial({ color: EMERALD, opacity: 0.95 }))
           );
           outerGroup.add(new THREE.LineSegments(lineGeo, lineMat));
 
@@ -420,22 +420,22 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
           const spokeGeo = registerDisposable(new THREE.BufferGeometry());
           spokeGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(spokeArr), 3));
           const spokeMat = registerDisposable(
-            noDepth(new THREE.LineBasicMaterial({ color: CREAM, opacity: 0.28 }))
+            noDepth(new THREE.LineBasicMaterial({ color: CREAM, opacity: 0.45 }))
           );
           rig.add(new THREE.LineSegments(spokeGeo, spokeMat));
         }
 
         // Two Thin Rings
         const ringSeg = isMobile ? 48 : 80;
-        const ring1Geo = registerDisposable(new THREE.TorusGeometry(1.62 * scaleMult, 0.01 * scaleMult, 6, ringSeg));
-        const ring1Mat = registerDisposable(noDepth(new THREE.MeshBasicMaterial({ color: CREAM, opacity: 0.6 })));
+        const ring1Geo = registerDisposable(new THREE.TorusGeometry(1.62 * scaleMult, 0.012 * scaleMult, 6, ringSeg));
+        const ring1Mat = registerDisposable(noDepth(new THREE.MeshBasicMaterial({ color: CREAM, opacity: 0.85 })));
         const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
         ring1.rotation.x = Math.PI / 2 + 0.3;
         ring1.rotation.y = 0.2 + rotOffsetY;
         rig.add(ring1);
 
-        const ring2Geo = registerDisposable(new THREE.TorusGeometry(1.54 * scaleMult, 0.01 * scaleMult, 6, ringSeg));
-        const ring2Mat = registerDisposable(noDepth(new THREE.MeshBasicMaterial({ color: EMERALD, opacity: 0.6 })));
+        const ring2Geo = registerDisposable(new THREE.TorusGeometry(1.54 * scaleMult, 0.012 * scaleMult, 6, ringSeg));
+        const ring2Mat = registerDisposable(noDepth(new THREE.MeshBasicMaterial({ color: EMERALD, opacity: 0.85 })));
         const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
         ring2.rotation.x = Math.PI / 2 - 0.25;
         ring2.rotation.y = -0.35 + rotOffsetY;
@@ -721,7 +721,7 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
         renderer.setSize(w, h, false);
         aspect = w / h;
         camera.aspect = aspect;
-        camera.position.z = aspect < 1 ? 8 + (1 - aspect) * 6.5 : 8;
+        camera.position.z = aspect < 1 ? 7.2 + (1 - aspect) * 2.4 : 8;
         camera.updateProjectionMatrix();
 
         const halfH = Math.tan((22.5 * Math.PI) / 180) * camera.position.z;
@@ -731,31 +731,27 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
 
         if (isMobileLayout) {
           // Mobile view:
-          // Only ONE globe, placed strictly BELOW the main heading and CTAs!
-          // Positioned at bottom center so it is shown as half hemisphere peeking up from bottom.
-          // It DOES NOT come under the heading text at all.
+          // The globe is in the right middle side (peeking from the right edge so it doesn't touch text, lower down)
           orb1.rig.visible = false;
           orb2.rig.visible = true;
-          orb2.rig.position.set(0, -halfH * 1.16, 0);
-          orb2.rig.scale.setScalar(0.96);
+          orb2.rig.position.set(halfW * 0.82, -halfH * 0.08, 0);
+          orb2.rig.scale.setScalar(0.68);
 
-          scatterLabel.position.set(0, -halfH * 0.42, 0.5);
-          cornerLattice.position.set(-halfW * 0.72, -halfH * 0.75, -0.3);
+          scatterLabel.position.set(halfW * 0.82, -halfH * 0.55, 0.5);
+          cornerLattice.position.set(-halfW * 0.65, -halfH * 0.85, -0.3);
         } else {
-          // Desktop view:
-          // TWO smaller globes:
-          // One in the top-left corner, one in the bottom-right corner.
-          // Center is completely clear for the main heading text.
+          // Other views (desktop / tablet):
+          // One globe in the top left and the other in the right bottom
           orb1.rig.visible = true;
           orb2.rig.visible = true;
 
-          // Orb 1: Top-Left
-          orb1.rig.position.set(-halfW * 0.76, halfH * 0.52, 0);
-          orb1.rig.scale.setScalar(0.58);
+          // Orb 1: Top Left
+          orb1.rig.position.set(-halfW * 0.76, halfH * 0.54, 0);
+          orb1.rig.scale.setScalar(0.65);
 
-          // Orb 2: Bottom-Right
-          orb2.rig.position.set(halfW * 0.76, -halfH * 0.52, 0);
-          orb2.rig.scale.setScalar(0.58);
+          // Orb 2: Right Bottom
+          orb2.rig.position.set(halfW * 0.76, -halfH * 0.54, 0);
+          orb2.rig.scale.setScalar(0.65);
 
           scatterLabel.position.set(0, -halfH * 0.78, 0.5);
           cornerLattice.position.set(-halfW * 0.72, -halfH * 0.65, -0.3);
@@ -1106,10 +1102,10 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
   return (
     <div
       ref={containerRef}
-      className={`absolute inset-0 pointer-events-none select-none overflow-hidden bg-black ${className}`}
+      className={`absolute inset-0 pointer-events-none select-none overflow-hidden ${className}`}
       aria-hidden="true"
     >
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block bg-black" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
     </div>
   );
 };

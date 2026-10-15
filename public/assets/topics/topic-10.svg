@@ -29,11 +29,6 @@
   <!-- Formula watermark -->
   <text x="370" y="45" font-family="'JetBrains Mono', 'Courier New', monospace" font-size="11" fill="#3ddc84" opacity="0.4" text-anchor="end">beta_k = rank(H_k), d(Delta) &lt;= epsilon</text>
 
-  <!-- Track badge in top left corner of artwork -->
-  <g transform="translate(26, 26)">
-    <rect width="48" height="24" rx="4" fill="#142723" stroke="#8FBFA8" stroke-width="1.2" opacity="0.9"/>
-    <text x="24" y="16.5" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold" fill="#8FBFA8" text-anchor="middle">T10</text>
-  </g>
 
   <!-- Track graphic visualization -->
   <g>

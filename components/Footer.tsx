@@ -4,7 +4,7 @@ import eventData from "@/data/event.json";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-brand-cream border-t border-[#3ddc84]/20 py-14 mt-auto">
+    <footer className="bg-black/75 backdrop-blur-[2px] text-brand-cream border-t border-[#3ddc84]/20 py-14 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 pb-10 border-b border-[#3ddc84]/15">
           <div className="md:col-span-2 space-y-4">
