@@ -731,13 +731,13 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
 
         if (isMobileLayout) {
           // Mobile view:
-          // The globe is in the right middle side (peeking from the right edge so it doesn't touch text, lower down)
+          // The globe is positioned lower and toward the right edge, scaled down slightly
           orb1.rig.visible = false;
           orb2.rig.visible = true;
-          orb2.rig.position.set(halfW * 0.82, -halfH * 0.08, 0);
-          orb2.rig.scale.setScalar(0.68);
+          orb2.rig.position.set(halfW * 0.90, -halfH * 0.18, 0);
+          orb2.rig.scale.setScalar(0.56);
 
-          scatterLabel.position.set(halfW * 0.82, -halfH * 0.55, 0.5);
+          scatterLabel.position.set(halfW * 0.88, -halfH * 0.60, 0.5);
           cornerLattice.position.set(-halfW * 0.65, -halfH * 0.85, -0.3);
         } else {
           // Other views (desktop / tablet):

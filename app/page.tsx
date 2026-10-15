@@ -74,7 +74,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 1. HERO SECTION                            */}
       {/* ========================================== */}
-      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-20 sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[100dvh] sm:min-h-[96vh] flex items-center justify-center" id="hero">
+      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-[98px] sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[100dvh] sm:min-h-[96vh] flex flex-col justify-start sm:justify-center items-start sm:items-center" id="hero">
         {/* Lattice Orb 3D WebGL Visualization */}
         <LatticeOrb />
 
@@ -84,17 +84,17 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full" id="hero-container">
           <div className="max-w-5xl mx-auto text-left sm:text-center flex flex-col items-start sm:items-center">
             {/* Jointly Organized above International Workshop and Conference */}
-            <div className="text-xs sm:text-sm font-mono uppercase tracking-normal sm:tracking-[0.2em] text-[#a2c4b5] mb-2 sm:mb-2.5 font-medium text-left sm:text-center">
+            <div className="text-xs sm:text-sm font-mono uppercase tracking-normal sm:tracking-[0.2em] text-[#a2c4b5] mb-1.5 sm:mb-2.5 font-medium text-left sm:text-center">
               Jointly Organized by GRI &amp; CUSAT
             </div>
 
             {/* Small uppercase label above - Bolder */}
-            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-wide sm:tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-3 sm:mb-4 text-left sm:text-center">
+            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-wide sm:tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-[18px] sm:mb-4 text-left sm:text-center">
               International Workshop and Conference
             </span>
 
             {/* Main Title - Mobile: intentional 3 lines left-aligned beside the lattice ball; Desktop: original 2 lines centered */}
-            <h1 className="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2 leading-[1.18] text-left sm:text-center max-w-[72%] sm:max-w-4xl">
+            <h1 className="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2.5 sm:mb-3 leading-[1.18] text-left sm:text-center max-w-full sm:max-w-4xl">
               <span className="sm:hidden block">Mathematical Models</span>
               <span className="sm:hidden block">for Post-Quantum</span>
               <span className="sm:hidden block text-white">Cryptography</span>
@@ -104,7 +104,7 @@ export default function Home() {
             </h1>
 
             {/* Subtitle - Deliberate line directly underneath in italic */}
-            <p className="font-serif text-base sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-left sm:text-center mb-4 sm:mb-6">
+            <p className="font-serif text-base sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-left sm:text-center mb-7 sm:mb-6">
               and its Applications
             </p>
 
