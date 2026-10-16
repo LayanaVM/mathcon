@@ -553,9 +553,9 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
       // Small Monospace Maths & Cryptography Text Labels floating in scene
       const mathLabelDefs = isMobile
         ? [
-            { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.55, 0.88] },
-            { t: 'SVP', c: '#3ddc84', anchor: [0.55, 0.82] },
-            { t: 'λ₁(L)', c: '#a7f3d0', anchor: [0.60, -0.72] }
+            { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.80, 0.90] },
+            { t: 'SVP', c: '#3ddc84', anchor: [0.80, 0.82] },
+            { t: 'λ₁(L)', c: '#a7f3d0', anchor: [0.75, -0.72] }
           ]
         : [
             { t: 'A·s + e mod q', c: '#a7f3d0', anchor: [-0.72, 0.82] },
@@ -731,14 +731,20 @@ const LatticeOrb: React.FC<LatticeOrbProps> = ({ className = '', enableInteracti
 
         if (isMobileLayout) {
           // Mobile view:
-          // The globe is positioned lower and toward the right edge, scaled down slightly
-          orb1.rig.visible = false;
+          // Keep the same alignment of the balls as desktop: one in top-left, one in bottom-right
+          orb1.rig.visible = true;
           orb2.rig.visible = true;
-          orb2.rig.position.set(halfW * 0.90, -halfH * 0.18, 0);
-          orb2.rig.scale.setScalar(0.56);
 
-          scatterLabel.position.set(halfW * 0.88, -halfH * 0.60, 0.5);
-          cornerLattice.position.set(-halfW * 0.65, -halfH * 0.85, -0.3);
+          // Orb 1: Top Left (anchored in top-left corner, clear of centered text)
+          orb1.rig.position.set(-halfW * 1.04, halfH * 0.80, 0);
+          orb1.rig.scale.setScalar(0.34);
+
+          // Orb 2: Right Bottom (anchored in bottom-right flank)
+          orb2.rig.position.set(halfW * 0.92, -halfH * 0.65, 0);
+          orb2.rig.scale.setScalar(0.45);
+
+          scatterLabel.position.set(0, -halfH * 0.82, 0.5);
+          cornerLattice.position.set(-halfW * 0.75, -halfH * 0.85, -0.3);
         } else {
           // Other views (desktop / tablet):
           // One globe in the top left and the other in the right bottom

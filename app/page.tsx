@@ -74,7 +74,7 @@ export default function Home() {
       {/* ========================================== */}
       {/* 1. HERO SECTION                            */}
       {/* ========================================== */}
-      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-[98px] sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[100dvh] sm:min-h-[96vh] flex flex-col justify-start sm:justify-center items-start sm:items-center" id="hero">
+      <section className="relative lattice-pattern text-brand-cream overflow-hidden pt-[98px] sm:pt-32 lg:pt-36 pb-8 sm:pb-32 lg:pb-32 border-b border-[#3ddc84]/15 min-h-[100dvh] sm:min-h-[96vh] flex flex-col justify-start sm:justify-center items-center" id="hero">
         {/* Lattice Orb 3D WebGL Visualization */}
         <LatticeOrb />
 
@@ -82,19 +82,19 @@ export default function Home() {
         <div className="hidden sm:block absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 pointer-events-none z-[2]" aria-hidden="true" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full" id="hero-container">
-          <div className="max-w-5xl mx-auto text-left sm:text-center flex flex-col items-start sm:items-center">
+          <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
             {/* Jointly Organized above International Workshop and Conference */}
-            <div className="text-xs sm:text-sm font-mono uppercase tracking-normal sm:tracking-[0.2em] text-[#a2c4b5] mb-1.5 sm:mb-2.5 font-medium text-left sm:text-center">
+            <div className="text-xs sm:text-sm font-mono uppercase tracking-normal sm:tracking-[0.2em] text-[#a2c4b5] mb-1.5 sm:mb-2.5 font-medium text-center">
               Jointly Organized by GRI &amp; CUSAT
             </div>
 
             {/* Small uppercase label above - Bolder */}
-            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-wide sm:tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-[18px] sm:mb-4 text-left sm:text-center">
+            <span className="text-xs sm:text-sm md:text-base font-mono uppercase tracking-wide sm:tracking-[0.25em] text-[#3ddc84] font-extrabold block mb-[18px] sm:mb-4 text-center">
               International Workshop and Conference
             </span>
 
-            {/* Main Title - Mobile: intentional 3 lines left-aligned beside the lattice ball; Desktop: original 2 lines centered */}
-            <h1 className="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2.5 sm:mb-3 leading-[1.18] text-left sm:text-center max-w-full sm:max-w-4xl">
+            {/* Main Title - Centered across all viewports with intentional line breaks */}
+            <h1 className="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-2.5 sm:mb-3 leading-[1.18] text-center max-w-full sm:max-w-4xl">
               <span className="sm:hidden block">Mathematical Models</span>
               <span className="sm:hidden block">for Post-Quantum</span>
               <span className="sm:hidden block text-white">Cryptography</span>
@@ -104,32 +104,29 @@ export default function Home() {
             </h1>
 
             {/* Subtitle - Deliberate line directly underneath in italic */}
-            <p className="font-serif text-base sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-left sm:text-center mb-7 sm:mb-6">
+            <p className="font-serif text-base sm:text-2xl lg:text-3xl text-[#d4e5dc]/90 font-medium italic tracking-wide text-center mb-7 sm:mb-6">
               and its Applications
             </p>
 
-            {/* Date below Main Heading - reduced excessive letter spacing */}
-            <h2 className="text-sm sm:text-xl font-mono text-brand-accent tracking-normal sm:tracking-wider mb-3.5 sm:mb-4 text-left sm:text-center font-medium">
+            {/* Date below Main Heading */}
+            <h2 className="text-sm sm:text-xl font-mono text-brand-accent tracking-normal sm:tracking-wider mb-3.5 sm:mb-4 text-center font-medium">
               {eventData.dates.display}
             </h2>
 
             {/* Venue - Updated to Seminar Complex, CUSAT */}
-            <div className="text-sm sm:text-base text-[#d4e5dc] tracking-normal mb-6 sm:mb-10 font-sans text-left sm:text-center">
+            <div className="text-sm sm:text-base text-[#d4e5dc] tracking-normal mb-6 sm:mb-10 font-sans text-center">
               <span className="text-white font-medium leading-snug">
                 Seminar Complex, CUSAT
               </span>
             </div>
 
             {/* CTAs - Sleeker, compact button sizing */}
-            <div className="flex flex-wrap items-center justify-start sm:justify-center gap-3.5 sm:gap-4 w-full">
+            <div className="flex flex-wrap items-center justify-center gap-3.5 sm:gap-4 w-full">
               <Link
                 href="/register"
                 className="w-auto min-w-[150px] max-w-[190px] sm:min-w-[180px] h-[38px] sm:h-[42px] px-5 bg-brand-accent text-black font-bold hover:bg-[#4ade80] active:scale-95 text-xs sm:text-sm rounded-lg transition-all shadow-md flex items-center justify-center gap-2"
               >
                 <span>Register Now</span>
-                <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
               </Link>
               <a
                 href="#topics"
